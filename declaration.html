@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Regen Commons — Offer Your Vision</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,700;1,9..144,400&family=Source+Serif+4:ital,wght@0,380;0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script>(function(){var t=localStorage.getItem('rc-theme')||'dark';document.documentElement.setAttribute('data-theme',t)})()</script>
+</head>
+<body data-page="declaration">
+
+  <a href="index.html" class="logo-mark" data-easter-egg>
+    <canvas id="logo-canvas" width="76" height="76"></canvas>
+    <span class="logo-mark-label">Regen Commons</span>
+  </a>
+
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
+    <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+
+  <!-- Mycelium background (z-index: 0 from CSS) -->
+  <canvas id="mycelium-canvas"></canvas>
+  <!-- Seed field canvas sits above mycelium -->
+  <canvas id="bubble-canvas"></canvas>
+
+  <!-- STATE 1: The form, shown until submission -->
+  <div class="declaration-ui" id="declaration-form-ui">
+    <div class="declaration-inner">
+      <span class="declaration-eyebrow">Offer your vision</span>
+      <p class="declaration-prompt">What futures emerge from commoning?<br/>Add your vision to shape what becomes possible in our shared commons.</p>
+      <p class="declaration-sub">
+        A sentence, a hope, a seed. It doesn't have to be polished.<br/>
+        What you plant here joins what others have planted. Together, these visions become the field.
+      </p>
+      <textarea
+        id="vision-input"
+        class="declaration-textarea"
+        rows="3"
+        placeholder="Write here — a sentence is enough…"
+        aria-label="Your vision for the commons"
+      ></textarea>
+      <p class="declaration-note">
+        Your words join the collection.<br/>
+        Others who arrive will see what you've offered.
+      </p>
+      <button class="btn" id="offer-btn"><span class="btn-label">Plant this seed</span> &rarr;</button>
+    </div>
+  </div>
+
+  <!-- STATE 2: The threshold moment — user's vision appears alone first -->
+  <div class="threshold-moment" id="threshold-moment" style="display:none;">
+    <div class="threshold-inner">
+      <p class="threshold-vision" id="threshold-vision-text"></p>
+    </div>
+  </div>
+
+  <!-- STATE 3: Seed field UI overlay (shown after threshold pause) -->
+  <div class="bubble-ui" id="bubble-ui">
+    <div class="bubble-counter" id="bubble-counter"></div>
+    <div class="bubble-cta">
+      <span class="bubble-cta-label">Your voice is part of the commons now.</span>
+      <button class="btn btn-primary" id="enter-commons-btn"><span class="btn-label">Step inside</span> &rarr;</button>
+    </div>
+  </div>
+
+  <script src="logo-canvas.js"></script>
+  <script src="canvas.js"></script>
+  <script src="script.js"></script>
+  <script>initCanvas(3);</script>
+</body>
+</html>

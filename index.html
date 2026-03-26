@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Regen Commons</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,700;1,9..144,400&family=Source+Serif+4:ital,wght@0,380;0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script>(function(){var t=localStorage.getItem('rc-theme')||'dark';document.documentElement.setAttribute('data-theme',t)})()</script>
+</head>
+<body data-page="landing">
+
+  <a href="index.html" class="logo-mark" data-easter-egg>
+    <canvas id="logo-canvas" width="76" height="76"></canvas>
+    <span class="logo-mark-label">Regen Commons</span>
+  </a>
+
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
+    <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+
+  <canvas id="mycelium-canvas"></canvas>
+
+  <!-- ═══ SCROLLING CONTENT ═══ -->
+  <main>
+
+    <!-- ── HERO ── -->
+    <section class="hero">
+      <h1 class="hero-title">
+        The ground<br/>
+        <em>beneath the work</em>
+      </h1>
+      <p class="hero-body reveal reveal-slow reveal-delay-1">
+        Across places and practices, people are tending the same living systems — often without knowing each other exists. This is a doorway into the Regen Commons.
+      </p>
+      <a href="#invitation" class="hero-scroll-indicator reveal reveal-delay-2" aria-label="Scroll down">
+        <svg class="scroll-chevrons" viewBox="0 0 24 40" width="24" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline class="chevron chevron-1" points="4,8 12,16 20,8" />
+          <polyline class="chevron chevron-2" points="4,18 12,26 20,18" />
+          <polyline class="chevron chevron-3" points="4,28 12,36 20,28" />
+        </svg>
+      </a>
+    </section>
+
+    <div class="strata">
+      <span class="strata-label">An invitation</span>
+    </div>
+
+    <!-- ── INVITATION ── -->
+    <section class="context" id="invitation">
+      <span class="section-label mono reveal context-label">From isolation to interbeing</span>
+      <h2 class="reveal">The work of hundreds of practitioners — gathered, tended, alive. Not a platform. A commons.</h2>
+      <p class="reveal reveal-delay-1">Governance frameworks, coordination patterns, shared infrastructure, field guides, research, brand resources — scattered across organizational silos, rebuilt from scratch, lost to time. What if it were all in one place, held by the people who use and tend it? Like a shared field, a library, a practice of collective care.</p>
+      <p class="context-tagline reveal reveal-delay-2"><em>A home for our shared work.</em></p>
+    </section>
+
+    <!-- ── BRIDGE — "What do you already tend?" ── -->
+    <section class="bridge reveal" id="bridge">
+      <p class="bridge-prompt">What do you already tend?</p>
+      <div class="bridge-tags" id="bridge-tags">
+        <button class="bridge-tag" data-tag="shared-knowledge">shared knowledge</button>
+        <button class="bridge-tag" data-tag="open-source">open-source tools</button>
+        <button class="bridge-tag" data-tag="governance">community governance</button>
+        <button class="bridge-tag" data-tag="decisions">collective decision-making</button>
+        <button class="bridge-tag" data-tag="land">shared land</button>
+        <button class="bridge-tag" data-tag="mutual-aid">mutual aid</button>
+        <button class="bridge-tag" data-tag="cooperative">cooperative work</button>
+        <button class="bridge-tag" data-tag="traditions">cultural traditions</button>
+        <button class="bridge-tag" data-tag="research">open research</button>
+        <button class="bridge-tag" data-tag="infrastructure">shared infrastructure</button>
+      </div>
+      <p class="bridge-response" id="bridge-response">You already know how to do this.</p>
+    </section>
+
+    <!-- ── CTA ── -->
+    <section class="cta cta--centered">
+      <p class="cta-heading reveal">Come see what's been planted.</p>
+      <a href="learn.html" class="btn btn--large reveal reveal-delay-1"><span class="btn-label">Step inside</span> &rarr;</a>
+    </section>
+
+  </main>
+
+  <script src="logo-canvas.js"></script>
+  <script src="canvas.js"></script>
+  <script src="script.js"></script>
+  <script>
+    initCanvas(1);
+
+    // ── Scroll reveals ──
+    const revealObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          revealObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(function(el) {
+      revealObserver.observe(el);
+    });
+
+    // ── Bridge tags interaction ──
+    var bridgeTags = document.querySelectorAll('.bridge-tag');
+    var bridgeResponse = document.getElementById('bridge-response');
+    var totalTags = bridgeTags.length;
+
+    bridgeTags.forEach(function(tag) {
+      tag.addEventListener('click', function() {
+        tag.classList.toggle('selected');
+        var selectedCount = document.querySelectorAll('.bridge-tag.selected').length;
+        if (selectedCount === totalTags) {
+          // Easter egg — all selected
+          bridgeResponse.textContent = 'Okay, overachiever. Welcome home.';
+          bridgeResponse.classList.add('visible', 'easter-egg');
+        } else if (selectedCount > 0) {
+          bridgeResponse.textContent = 'You already know how to do this.';
+          bridgeResponse.classList.add('visible');
+          bridgeResponse.classList.remove('easter-egg');
+        } else {
+          bridgeResponse.classList.remove('visible', 'easter-egg');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

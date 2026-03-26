@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Regen Commons — Inside the Commons</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,700;1,9..144,400&family=Source+Serif+4:ital,wght@0,380;0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script>(function(){var t=localStorage.getItem('rc-theme')||'dark';document.documentElement.setAttribute('data-theme',t)})()</script>
+</head>
+<body data-page="map">
+
+  <a href="index.html" class="logo-mark" data-easter-egg>
+    <canvas id="logo-canvas" width="76" height="76"></canvas>
+    <span class="logo-mark-label">Regen Commons</span>
+  </a>
+
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
+    <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+
+  <canvas id="mycelium-canvas"></canvas>
+
+  <!-- ═══ MAP PAGE ═══ -->
+  <div class="map-page">
+
+    <!-- ═══ 1. ARRIVAL + MEMBERSHIP CTA ═══ -->
+    <section class="map-hero">
+      <h1 class="map-hero-title">You're inside.</h1>
+      <p class="map-hero-body">This is the Regen Commons — a living map of the people, knowledge, and experiments that the regenerative movement holds in common.</p>
+      <div class="map-hero-cta">
+        <a href="join.html" class="btn btn--large btn--primary"><span class="btn-label">Become a member</span> &rarr;</a>
+        <p class="map-hero-cta-sub">Members can query the full knowledge base, join experiments, and shape what gets built.</p>
+      </div>
+    </section>
+
+    <!-- ═══ 2. ECOSYSTEM MAP ═══ -->
+    <section class="ecosystem" id="ecosystem">
+      <div class="ecosystem-header">
+        <h2>The Ecosystem</h2>
+        <p>Organizations, practitioners, and the connections between them. Hover to explore.</p>
+      </div>
+      <div class="ecosystem-map-wrap">
+        <canvas id="ecosystem-canvas" width="900" height="500"></canvas>
+        <div class="ecosystem-tooltip" id="eco-tooltip" style="display:none;">
+          <span class="eco-tooltip-name" id="eco-tooltip-name"></span>
+          <span class="eco-tooltip-role" id="eco-tooltip-role"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 3. SHARED KNOWLEDGE ═══ -->
+    <section class="shared-knowledge" id="shared-knowledge">
+      <h2>Shared Knowledge</h2>
+      <p>76,000+ documents. Governance frameworks, coordination patterns, research, practice guides.</p>
+      <div class="kc-query">
+        <input type="text" class="kc-query-input" id="kc-query-input" placeholder="Ask the commons something..." aria-label="Query the knowledge commons" />
+        <button class="btn kc-query-btn" id="kc-query-btn"><span class="btn-label">Ask</span></button>
+      </div>
+    </section>
+
+    <!-- ═══ 4. COMMONS ASSETS ═══ -->
+    <section class="commons-assets" id="commons-assets">
+      <h2>What's in the Commons</h2>
+
+      <!-- Filters (inline, above grid) -->
+      <div class="map-filters-inline">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="knowledge">Knowledge</button>
+        <button class="filter-btn" data-filter="infrastructure">Infrastructure</button>
+        <button class="filter-btn" data-filter="brand">Brand &amp; IP</button>
+        <button class="filter-btn" data-filter="governance">Governance &amp; Legal</button>
+        <button class="filter-btn" data-filter="coordination">Coordination</button>
+      </div>
+
+      <div class="commons-grid" id="commons-grid">
+
+        <!-- ═══ KNOWLEDGE ASSETS ═══ -->
+
+        <article class="commons-card" data-type="knowledge">
+          <div class="card-header">
+            <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="30" cy="30" r="4" stroke="#1A7860" stroke-width="1" fill="rgba(26,120,96,0.12)"/>
+              <circle cx="30" cy="30" r="8" stroke="#1A7860" stroke-width="0.4" fill="none" stroke-dasharray="2 2"/>
+              <path d="M30 22 Q30 10 20 6" stroke="#1A7860" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+              <path d="M30 22 Q30 10 40 6" stroke="#1A7860" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+              <path d="M24 28 Q12 28 8 20" stroke="#1A7860" stroke-width="1.0" fill="none" stroke-linecap="round"/>
+              <path d="M36 28 Q48 28 52 20" stroke="#1A7860" stroke-width="1.0" fill="none" stroke-linecap="round"/>
+              <path d="M30 38 Q30 50 24 56" stroke="#1A7860" stroke-width="0.8" fill="none" stroke-linecap="round"/>
+              <path d="M30 38 Q30 50 36 56" stroke="#1A7860" stroke-width="0.8" fill="none" stroke-linecap="round"/>
+              <circle cx="20" cy="6" r="2" fill="#1A7860" opacity="0.6"/>
+              <circle cx="40" cy="6" r="2" fill="#1A7860" opacity="0.6"/>
+              <circle cx="8"  cy="20" r="2" fill="#1A7860" opacity="0.5"/>
+              <circle cx="52" cy="20" r="2" fill="#1A7860" opacity="0.5"/>
+            </svg>
+            <div class="card-header-text">
+              <span class="card-type">Knowledge</span>
+              <h3 class="card-name">Indexed Knowledge Base</h3>
+              <span class="card-teaser">76,000+ documents across 20+ source types — research, transcripts, governance frameworks, field guides</span>
+              <span class="card-contributor">Contributed by Regen Network</span>
+            </div>
+            <button class="card-toggle" aria-label="Expand">+</button>
+          </div>
+          <div class="card-body-wrap">
+            <div class="card-body">
+              <div class="card-body-inner">
+                <p>Regen Network's KOI instantiation: a searchable, agent-queryable knowledge base with hybrid search, entity extraction, and structured indexing. Covers ecological knowledge, regenerative finance documentation, and cross-sector research.</p>
+                <p class="card-terms"><strong>Terms:</strong> CopyFair license. Members may query, cite, and build on this knowledge freely for research, education, and internal operations. Derivative works must be contributed back. Non-members require conditional licensing for commercial use. Attribution to Regen Network required.</p>
+                <a href="#" class="card-action-link">Explore the knowledge base &rarr;</a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="commons-card" data-type="knowledge">
+          <div class="card-header">
+            <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="30" cy="20" r="12" stroke="#1A7860" stroke-width="0.8" fill="rgba(26,120,96,0.08)"/>
+              <circle cx="30" cy="20" r="6" stroke="#1A7860" stroke-width="0.5" fill="none" stroke-dasharray="2 2"/>
+              <path d="M30 32 L30 54" stroke="#1A7860" stroke-width="0.8" fill="none" stroke-dasharray="3 3"/>
+              <circle cx="30" cy="20" r="2.5" fill="#1A7860" opacity="0.5"/>
+            </svg>
+            <div class="card-header-text">
+              <span class="card-type">Knowledge</span>
+              <h3 class="card-name">Podcast Transcripts &amp; Knowledge Graph</h3>
+              <span class="card-teaser">ReFi Podcast archive — indexed transcripts, structured datasets, and curated knowledge graphs</span>
+              <span class="card-contributor">Contributed by ReFi DAO</span>
+            </div>
+            <button class="card-toggle" aria-label="Expand">+</button>
+          </div>
+          <div class="card-body-wrap">
+            <div class="card-body">
+              <div class="card-body-inner">
+                <p>The full ReFi Podcast transcript archive, structured as queryable knowledge graph datasets. Includes blog content, educational resources, and curated collections spanning regenerative finance, coordination, and ecological economics.</p>
+                <p class="card-terms"><strong>Terms:</strong> CopyFair license. Free use within the commons for research, education, and synthesis. Attribution to ReFi DAO required. Reciprocal sharing — any published derivative work must be contributed back under the same license.</p>
+                <a href="#" class="card-action-link">Browse the archive &rarr;</a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="commons-card" data-type="knowledge">
+          <div class="card-header">
+            <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M10 50 Q20 30 30 20 Q40 10 50 14" stroke="#1A7860" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+              <path d="M10 42 Q22 26 34 18 Q44 12 54 18" stroke="#1A7860" stroke-width="0.6" fill="none" stroke-dasharray="2 3" opacity="0.5"/>
+              <circle cx="30" cy="20" r="3" fill="#1A7860" opacity="0.5"/>
+              <circle cx="50" cy="14" r="2.5" fill="#1A7860" opacity="0.4"/>
+              <circle cx="10" cy="50" r="2.5" fill="#1A7860" opacity="0.4"/>
+            </svg>
+            <div class="card-header-text">
+              <span class="card-type">Knowledge</span>
+              <h3 class="card-name">Educational Materials &amp; Community Knowledge</h3>
+              <span class="card-teaser">Course content, learning guides, and community coordination knowledge</span>
+              <span class="card-contributor">Contributed by Greenpill Network</span>
+            </div>
+            <button class="card-toggle" aria-label="Expand">+</button>
+          </div>
+          <div class="card-body-wrap">
+            <div class="card-body">
+              <div class="card-body-inner">
+                <p>Greenpill's educational materials, podcast content, and community coordination knowledge. Includes learning resources on regenerative economics, public goods funding, and decentralized governance — built through distributed community chapters.</p>
+                <p class="card-terms"><strong>Terms:</strong> CopyFair license. Free use for education and research within the commons. Commercial use by non-members requires conditional licensing. Attribution to Greenpill Network required.</p>
+                <a href="#" class="card-action-link">Explore materials &rarr;</a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="commons-card" data-type="knowledge">
+          <div class="card-header">
+            <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="12" y="12" width="36" height="36" rx="2" stroke="#1A7860" stroke-width="0.8" fill="rgba(26,120,96,0.06)"/>
+              <line x1="12" y1="24" x2="48" y2="24" stroke="#1A7860" stroke-width="0.5" opacity="0.4"/>
+              <line x1="12" y1="36" x2="48" y2="36" stroke="#1A7860" stroke-width="0.5" opacity="0.4"/>
+              <line x1="30" y1="12" x2="30" y2="48" stroke="#1A7860" stroke-width="0.5" opacity="0.4"/>
+            </svg>
+            <div class="card-header-text">
+              <span class="card-type">Knowledge</span>
+              <h3 class="card-name">Governance Frameworks &amp; Institutional Design</h3>
+              <span class="card-teaser">Reusable governance templates, civic coordination patterns, and institutional design documents</span>
+              <span class="card-contributor">Contributed by OpenCivics</span>
+            </div>
+            <button class="card-toggle" aria-label="Expand">+</button>
+          </div>
+          <div class="card-body-wrap">
+            <div class="card-body">
+              <div class="card-body-inner">
+                <p>OpenCivics' library of governance frameworks, civic coordination knowledge, and institutional design templates. Built through years of work with civic organizations, cooperatives, and commons-based institutions.</p>
+                <p class="card-terms"><strong>Terms:</strong> CopyFair license. Fork, adapt, and use freely within the commons. Published adaptations must cite OpenCivics and be contributed back. Non-member commercial use requires conditional licensing.</p>
+                <a href="#" class="card-action-link">Browse frameworks &rarr;</a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- ═══ INFRASTRUCTURE ASSETS ═══ -->
+
+        <article class="commons-card" data-type="infrastructure">
+          <div class="card-header">
+            <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="18" y="18" width="24" height="24" rx="2" stroke="#2A6888" stroke-width="1" fill="rgba(42,104,136,0.10)"/>
+              <line x1="18" y1="24" x2="6"  y2="24" stroke="#2A6888" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="18" y1="30" x2="6"  y2="30" stroke="#2A6888" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="18" y1="36" x2="6"  y2="36" stroke="#2A6888" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="42" y1="24" x2="54" y2="24" stroke="#2A6888" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="42" y1="30" x2="54" y2="30" stroke="#2A6888" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="42" y1="36" x2="54" y2="36" stroke="#2A6888" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="24" y1="18" x2="24" y2="6"  stroke="#2A6888" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="36" y1="18" x2="36" y2="6"  stroke="#2A6888" stroke-width="1.2" stroke-linecap="round"/>
+              <circle cx="30" cy="30" r="4" fill="rgba(42,104,136,0.25)" stroke="#2A6888" stroke-width="0.6"/>
+            </svg>
+            <div class="card-header-text">
+              <span class="card-type">Infrastructure</span>
+              <h3 class="card-name">KOI — Knowledge Organisation Infrastructure</h3>
+              <span class="card-teaser">Open-source interoperability protocol for federated knowledge commons</span>
+              <span class="card-contributor">Maintained by BlockScience / Metagov / RMIT</span>
+            </div>
+            <button class="card-toggle" aria-label="Expand">+</button>
+          </div>
+          <div class="card-body-wrap">
+            <div class="card-body">
+              <div class="card-body-inner">
+                <p>The technical substrate for the federated knowledge commons. FUN events (Forget, Update, New) as signed envelopes. Mutual consent edge formation between organizations. Each org maintains a sovereign knowledge garden; KOI connects them without centralizing ownership.</p>
+                <p class="card-terms"><strong>Terms:</strong> Open source. Any organization meeting the protocol standard can operate a KOI node. Protocol changes governed by commons consensus. No licensing fee for participation — contribution to protocol maintenance expected from steward-level members.</p>
+                <a href="#" class="card-action-link">Read the protocol spec &rarr;</a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="commons-card" data-type="infrastructure">
+          <div class="card-header">
+            <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="30" cy="30" r="3.5" fill="#2A6888" opacity="0.5"/>
+              <circle cx="12" cy="18" r="2.5" fill="#2A6888" opacity="0.4"/>
+              <circle cx="48" cy="18" r="2.5" fill="#2A6888" opacity="0.4"/>
+              <circle cx="10" cy="44" r="2.5" fill="#2A6888" opacity="0.35"/>
+              <circle cx="50" cy="44" r="2.5" fill="#2A6888" opacity="0.35"/>
+              <path d="M30 30 Q20 24 12 18" stroke="#2A6888" stroke-width="0.8" fill="none"/>
+              <path d="M30 30 Q40 24 48 18" stroke="#2A6888" stroke-width="0.8" fill="none"/>
+              <path d="M30 30 Q18 36 10 44" stroke="#2A6888" stroke-width="0.7" fill="none"/>
+              <path d="M30 30 Q42 36 50 44" stroke="#2A6888" stroke-width="0.7" fill="none"/>
+            </svg>
+            <div class="card-header-text">
+              <span class="card-type">Infrastructure</span>
+              <h3 class="card-name">AI Agents &amp; Querying Tooling</h3>
+              <span class="card-teaser">Organizational agents for cross-org knowledge synthesis, search, and collaboration</span>
+              <span class="card-contributor">Built by Darren &amp; Sean (GaiaAI) · Maintained by Regen Network</span>
+            </div>
+            <button class="card-toggle" aria-label="Expand">+</button>
+          </div>
+          <div class="card-body-wrap">
+            <div class="card-body">
+              <div class="card-body-inner">
+                <p>Agent-queryable interfaces for the knowledge commons. Each member organization can deploy an AI agent that queries its own knowledge garden and participates in cross-organizational synthesis. Includes hybrid search, entity extraction, and structured response generation.</p>
+                <p class="card-terms"><strong>Terms:</strong> Open source tooling. Agents operate within each org's sovereign garden — no data leaves without consent. Cross-org queries require mutual consent edges. Agent marketplace (future) will use commons governance for quality and trust.</p>
+                <a href="#" class="card-action-link">View the demo &rarr;</a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- ═══ BRAND & IP ASSETS ═══ -->
+
+        <article class="commons-card" data-type="brand">
+          <div class="card-header">
+            <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M20 8 Q35 18 20 30 Q5 42 20 52" stroke="#944818" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+              <path d="M40 8 Q25 18 40 30 Q55 42 40 52" stroke="#944818" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+              <line x1="20" y1="15" x2="40" y2="15" stroke="#944818" stroke-width="0.6" opacity="0.5"/>
+              <line x1="20" y1="24" x2="40" y2="24" stroke="#944818" stroke-width="0.6" opacity="0.5"/>
+              <line x1="20" y1="36" x2="40" y2="36" stroke="#944818" stroke-width="0.6" opacity="0.5"/>
+              <line x1="20" y1="45" x2="40" y2="45" stroke="#944818" stroke-width="0.6" opacity="0.5"/>
+            </svg>
+            <div class="card-header-text">
+              <span class="card-type">Brand &amp; IP</span>
+              <h3 class="card-name">Regen Trademark</h3>
+              <span class="card-teaser">USPTO #90790939 — the "Regen" mark and member certification, held in trust as a commons asset</span>
+              <span class="card-contributor">Filed by Regen Network · Administered by Steward Council</span>
+            </div>
+            <button class="card-toggle" aria-label="Expand">+</button>
+          </div>
+          <div class="card-body-wrap">
+            <div class="card-body">
+              <div class="card-body-inner">
+                <p>The word "Regen" and the commons certification mark — contributed as a shared asset. Member certification uses this mark. Affiliation made legible without requiring organizational merger.</p>
+                <p class="card-terms"><strong>Terms:</strong> Licensed Partner model. Members may use the mark for affiliated projects that meet commons quality standards. Non-member use prohibited. Trademark administration by the Steward Council. Usage guidelines include co-branding templates and approved contexts.</p>
+                <a href="#" class="card-action-link">Read the trademark terms &rarr;</a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="commons-card" data-type="brand">
+          <div class="card-header">
+            <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <polygon points="30,6 50,22 44,46 16,46 10,22" stroke="#944818" stroke-width="0.9" fill="rgba(148,72,24,0.08)"/>
+              <polygon points="30,14 42,24 38,40 22,40 18,24" stroke="#944818" stroke-width="0.5" fill="none" stroke-dasharray="2 2" opacity="0.6"/>
+              <circle cx="30" cy="30" r="5" stroke="#944818" stroke-width="0.7" fill="rgba(148,72,24,0.2)"/>
+            </svg>
+            <div class="card-header-text">
+              <span class="card-type">Brand &amp; IP</span>
+              <h3 class="card-name">Brand Identity System</h3>
+              <span class="card-teaser">Visual identity, tone of voice, typography, color palette, co-branding templates, and messaging framework</span>
+              <span class="card-contributor">Designed by Patricia Parkinson · Commissioned by Steward Council</span>
+            </div>
+            <button class="card-toggle" aria-label="Expand">+</button>
+          </div>
+          <div class="card-body-wrap">
+            <div class="card-body">
+              <div class="card-body-inner">
+                <p>The complete brand system: symbol, logotype, lockup, color palette, typography, imagery direction, tone of voice, personas, and style guides. Grounded, honest, invitational — the aesthetic of a field notebook rather than a tech product. Built from the design sprint to grow with the commons.</p>
+                <p class="card-terms"><strong>Terms:</strong> Licensed Partner model. Available to affiliated projects meeting commons standards. Usage rules and co-branding templates provided. Non-member use requires explicit permission. Visual assets include source files for adaptation.</p>
+                <a href="#" class="card-action-link">Explore the brand system &rarr;</a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- ═══ GOVERNANCE & LEGAL ASSETS ═══ -->
+
+        <article class="commons-card" data-type="governance">
+          <div class="card-header">
+            <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="30" cy="30" r="26" stroke="#A87010" stroke-width="0.6" fill="none" opacity="0.4"/>
+              <circle cx="30" cy="30" r="20" stroke="#A87010" stroke-width="0.6" fill="none" opacity="0.5"/>
+              <circle cx="30" cy="30" r="14" stroke="#A87010" stroke-width="0.8" fill="none" opacity="0.6"/>
+              <circle cx="30" cy="30" r="8"  stroke="#A87010" stroke-width="0.8" fill="none" opacity="0.7"/>
+              <circle cx="30" cy="30" r="3"  fill="#A87010" opacity="0.6"/>
+              <line x1="30" y1="4"  x2="30" y2="56" stroke="#A87010" stroke-width="0.3" opacity="0.2"/>
+              <line x1="4"  y1="30" x2="56" y2="30" stroke="#A87010" stroke-width="0.3" opacity="0.2"/>
+            </svg>
+            <div class="card-header-text">
+              <span class="card-type">Governance &amp; Legal</span>
+              <h3 class="card-name">The Constitution Stack</h3>
+              <span class="card-teaser">Identity, principles, membrane model, roles, mandates — layered like tree rings</span>
+              <span class="card-contributor">Authored by Steward Council · Led by Gregory Landua &amp; Monty Bryant</span>
+            </div>
+            <button class="card-toggle" aria-label="Expand">+</button>
+          </div>
+          <div class="card-body-wrap">
+            <div class="card-body">
+              <div class="card-body-inner">
+                <p>The most developed governance architecture the regenerative movement has. Each outer ring depends on what's inside: identity at center, then principles, then membrane model (who's in, who's not, how you cross), then roles, then mandates. Includes conflict resolution, decision-making protocols, and amendment processes.</p>
+                <p class="card-terms"><strong>Terms:</strong> CopyFair license. Fork, adapt, cite your source. Published adaptations must be contributed back. Immediately useful to anyone building a commons. The constitution itself is a commons asset — designed to be replicated.</p>
+                <a href="#" class="card-action-link">Read the constitution &rarr;</a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="commons-card" data-type="governance">
+          <div class="card-header">
+            <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <ellipse cx="30" cy="30" rx="22" ry="26" stroke="#A87010" stroke-width="0.8" fill="rgba(168,112,16,0.06)"/>
+              <ellipse cx="30" cy="30" rx="13" ry="16" stroke="#A87010" stroke-width="0.5" fill="none" stroke-dasharray="2 2" opacity="0.6"/>
+              <circle cx="30" cy="24" r="4" stroke="#A87010" stroke-width="0.7" fill="rgba(168,112,16,0.15)"/>
+              <circle cx="30" cy="36" r="4" stroke="#A87010" stroke-width="0.7" fill="rgba(168,112,16,0.15)"/>
+              <line x1="30" y1="20" x2="30" y2="40" stroke="#A87010" stroke-width="0.4" opacity="0.4"/>
+            </svg>
+            <div class="card-header-text">
+              <span class="card-type">Governance &amp; Legal</span>
+              <h3 class="card-name">Commons Knowledge License</h3>
+              <span class="card-teaser">CopyFair-based — use freely within the commons, reciprocal sharing, protection against extraction</span>
+              <span class="card-contributor">Drafted by Steven &amp; Mill Law Center · Reviewed by Steward Council</span>
+            </div>
+            <button class="card-toggle" aria-label="Expand">+</button>
+          </div>
+          <div class="card-body-wrap">
+            <div class="card-body">
+              <div class="card-body-inner">
+                <p>The licensing framework for all commons assets. Based on CopyFair principles: members use, build on, and share back freely. Non-members seeking commercial use require conditional licensing. Attribution built in at the document level.</p>
+                <p class="card-terms"><strong>Terms:</strong> Members: free use for research, education, collaboration, and internal operations. Derivative works that are published externally must be contributed back under the same license. Non-members: read-only access to outer ring; commercial use requires membership or conditional license fee.</p>
+                <a href="#" class="card-action-link">Read the license &rarr;</a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="commons-card" data-type="governance">
+          <div class="card-header">
+            <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="24" cy="30" r="16" stroke="#A87010" stroke-width="0.9" fill="rgba(168,112,16,0.07)"/>
+              <circle cx="36" cy="30" r="16" stroke="#A87010" stroke-width="0.9" fill="rgba(168,112,16,0.07)"/>
+              <path d="M30 15.4 Q38 22 38 30 Q38 38 30 44.6 Q22 38 22 30 Q22 22 30 15.4Z" fill="rgba(168,112,16,0.15)" stroke="none"/>
+            </svg>
+            <div class="card-header-text">
+              <span class="card-type">Governance &amp; Legal</span>
+              <h3 class="card-name">Membership Agreement</h3>
+              <span class="card-teaser">The document that crosses an organization from observer to participant — commits to mission, reciprocity, license</span>
+              <span class="card-contributor">Drafted by Steward Council · Legal review by Mill Law Center</span>
+            </div>
+            <button class="card-toggle" aria-label="Expand">+</button>
+          </div>
+          <div class="card-body-wrap">
+            <div class="card-body">
+              <div class="card-body-inner">
+                <p>The binding agreement between the commons and each member organization. Commits to shared mission, reciprocal contribution, and license terms. Currently in draft — being shaped through the steward questionnaire process before going live.</p>
+                <p class="card-terms"><strong>Terms:</strong> Click-wrap format at membership sign-up. Requires legal review before going live. Covers: contribution commitments, IP handling, dispute resolution, exit provisions. Currently in draft — not yet binding.</p>
+                <a href="#" class="card-action-link">Read the draft &rarr;</a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="commons-card" data-type="governance">
+          <div class="card-header">
+            <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M30 30 Q30 22 38 18 Q46 14 50 22 Q54 30 48 38 Q42 46 30 46 Q18 46 12 36 Q6 26 12 16 Q18 6 32 8" stroke="#A87010" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+              <circle cx="30" cy="30" r="3" fill="#A87010" opacity="0.5"/>
+            </svg>
+            <div class="card-header-text">
+              <span class="card-type">Governance &amp; Legal</span>
+              <h3 class="card-name">Steward Transition Protocol</h3>
+              <span class="card-teaser">1-year renewable terms, graceful exit pathway, treasury handover — the system survives its founders</span>
+              <span class="card-contributor">Designed by Steward Council</span>
+            </div>
+            <button class="card-toggle" aria-label="Expand">+</button>
+          </div>
+          <div class="card-body-wrap">
+            <div class="card-body">
+              <div class="card-body-inner">
+                <p>The mechanism that ensures the commons doesn't depend on its founding stewards. 1-year renewable terms, graceful exit pathway, treasury handover process, emeritus option. Exit is a design feature, not an afterthought.</p>
+                <p class="card-terms"><strong>Terms:</strong> Part of the Constitution Stack. Applies to all steward-level members. Stewards may exit at any term boundary with 60-day transition period. The protocol itself is a commons asset — designed to be forked by other commons.</p>
+                <a href="#" class="card-action-link">Read the protocol &rarr;</a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- ═══ COORDINATION ASSETS ═══ -->
+
+        <article class="commons-card" data-type="coordination">
+          <div class="card-header">
+            <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M30 54 Q30 40 30 8" stroke="#1E3A10" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+              <path d="M30 20 Q20 16 12 20" stroke="#1E3A10" stroke-width="0.8" fill="none" stroke-linecap="round"/>
+              <path d="M30 20 Q40 16 48 20" stroke="#1E3A10" stroke-width="0.8" fill="none" stroke-linecap="round"/>
+              <path d="M30 32 Q18 28 10 32" stroke="#1E3A10" stroke-width="0.7" fill="none" stroke-linecap="round"/>
+              <path d="M30 32 Q42 28 50 32" stroke="#1E3A10" stroke-width="0.7" fill="none" stroke-linecap="round"/>
+              <path d="M30 44 Q20 40 14 44" stroke="#1E3A10" stroke-width="0.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+              <path d="M30 44 Q40 40 46 44" stroke="#1E3A10" stroke-width="0.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+            </svg>
+            <div class="card-header-text">
+              <span class="card-type">Coordination</span>
+              <h3 class="card-name">Steward Questionnaire Methodology</h3>
+              <span class="card-teaser">A replicable process for distributed stakeholder alignment — gathering what a community actually needs</span>
+              <span class="card-contributor">Developed by Patricia Parkinson &amp; Monty Bryant</span>
+            </div>
+            <button class="card-toggle" aria-label="Expand">+</button>
+          </div>
+          <div class="card-body-wrap">
+            <div class="card-body">
+              <div class="card-body-inner">
+                <p>A methodology for distributed stakeholder alignment — gathering what a community actually needs across geography, role, and knowledge type. The process of building the commons is itself a commons asset. Replicable beyond Regen — designed to be forked by any community facing the same coordination challenge.</p>
+                <p class="card-terms"><strong>Terms:</strong> CopyFair license. Freely usable by commons members. Published adaptations require attribution and reciprocal sharing. The methodology includes templates, facilitation guides, and synthesis patterns.</p>
+                <a href="#" class="card-action-link">Explore the methodology &rarr;</a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="commons-card" data-type="coordination">
+          <div class="card-header">
+            <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <ellipse cx="22" cy="22" rx="14" ry="10" stroke="#1E3A10" stroke-width="0.7" fill="rgba(30,58,16,0.07)"/>
+              <ellipse cx="38" cy="22" rx="14" ry="10" stroke="#1E3A10" stroke-width="0.7" fill="rgba(30,58,16,0.07)"/>
+              <ellipse cx="22" cy="38" rx="14" ry="10" stroke="#1E3A10" stroke-width="0.7" fill="rgba(30,58,16,0.07)"/>
+              <ellipse cx="38" cy="38" rx="14" ry="10" stroke="#1E3A10" stroke-width="0.7" fill="rgba(30,58,16,0.07)"/>
+              <circle cx="30" cy="30" r="4" fill="rgba(30,58,16,0.25)" stroke="#1E3A10" stroke-width="0.6"/>
+            </svg>
+            <div class="card-header-text">
+              <span class="card-type">Coordination</span>
+              <h3 class="card-name">Coordination Patterns &amp; Meeting Rhythms</h3>
+              <span class="card-teaser">Decision formats, facilitation tools, sense-making practices — tested forms that hold groups through hard conversations</span>
+              <span class="card-contributor">Contributed by OpenCivics &amp; Steward Council</span>
+            </div>
+            <button class="card-toggle" aria-label="Expand">+</button>
+          </div>
+          <div class="card-body-wrap">
+            <div class="card-body">
+              <div class="card-body-inner">
+                <p>Meeting rhythms, decision-making formats, facilitation tools, community rituals, and sense-making practices. Not theory — tested forms that have held groups through hard conversations. Includes shared glossaries and common terminology for cross-organizational alignment.</p>
+                <p class="card-terms"><strong>Terms:</strong> CopyFair license. Fork, adapt, return enriched. These patterns are living documents — updated as the commons learns. Attribution to contributing organizations required.</p>
+                <a href="#" class="card-action-link">Explore the patterns &rarr;</a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="commons-card" data-type="coordination">
+          <div class="card-header">
+            <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M8 52 Q12 40 20 34 Q30 26 44 20 Q52 16 54 10" stroke="#1E3A10" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+              <circle cx="8"  cy="52" r="3" fill="#1E3A10" opacity="0.5"/>
+              <circle cx="20" cy="34" r="3" fill="#1E3A10" opacity="0.55"/>
+              <circle cx="36" cy="24" r="3" fill="#1E3A10" opacity="0.6"/>
+              <circle cx="52" cy="12" r="3" fill="#1E3A10" opacity="0.65"/>
+              <line x1="8"  y1="52" x2="8"  y2="58" stroke="#1E3A10" stroke-width="0.5" opacity="0.4"/>
+              <line x1="20" y1="34" x2="20" y2="40" stroke="#1E3A10" stroke-width="0.5" opacity="0.4"/>
+              <line x1="36" y1="24" x2="36" y2="30" stroke="#1E3A10" stroke-width="0.5" opacity="0.4"/>
+              <line x1="52" y1="12" x2="52" y2="18" stroke="#1E3A10" stroke-width="0.5" opacity="0.4"/>
+            </svg>
+            <div class="card-header-text">
+              <span class="card-type">Coordination</span>
+              <h3 class="card-name">Funding Model &amp; Sustainability Arc</h3>
+              <span class="card-teaser">Grant funding → reciprocal contribution → conditional licensing → revenue sharing</span>
+              <span class="card-contributor">Designed by Monty Bryant &amp; Gregory Landua</span>
+            </div>
+            <button class="card-toggle" aria-label="Expand">+</button>
+          </div>
+          <div class="card-body-wrap">
+            <div class="card-body">
+              <div class="card-body-inner">
+                <p>The commons cannot run on goodwill indefinitely. This is the sustainability arc: grant funding bootstraps the initial phase, then reciprocal contribution from members, then conditional licensing fees from non-member commercial users, then revenue sharing as the commons grows.</p>
+                <p class="card-terms"><strong>Terms:</strong> The funding model itself is a commons asset — designed to be forked by other commons-building projects facing the same sustainability challenge. CopyFair license. Attribution required.</p>
+                <a href="#" class="card-action-link">Explore the model &rarr;</a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div><!-- /commons-grid -->
+    </section>
+
+    <!-- ═══ 5. WHAT'S HAPPENING ═══ -->
+    <section class="whats-happening" id="whats-happening">
+      <h2>What's Happening</h2>
+      <div class="happening-grid">
+        <div class="happening-experiments">
+          <h3>Active Experiments</h3>
+          <div class="experiment-card" data-stage="flowering">
+            <span class="experiment-stage">Flowering</span>
+            <h4>Federated Knowledge Commons</h4>
+            <p>What happens when organizations cross-query each other's knowledge gardens?</p>
+            <span class="experiment-tenders">GaiaAI, Regen Network, Patricia Parkinson</span>
+          </div>
+          <div class="experiment-card" data-stage="sprout">
+            <span class="experiment-stage">Sprouting</span>
+            <h4>CopyFair Licensing Pilot</h4>
+            <p>Testing commons-based licensing that protects shared knowledge while enabling use.</p>
+            <span class="experiment-tenders">OpenCivics, Mill Law Center</span>
+          </div>
+          <div class="experiment-card" data-stage="seed">
+            <span class="experiment-stage">Seed</span>
+            <h4>Steward Transition</h4>
+            <p>How do you rotate stewardship without losing institutional memory?</p>
+            <span class="experiment-tenders">Regen Commons Stewards</span>
+          </div>
+          <div class="experiment-card" data-stage="flowering">
+            <span class="experiment-stage">Flowering</span>
+            <h4>Regen Identity &amp; Presence</h4>
+            <p>What does it feel like to encounter, enter, and deepen into a commons?</p>
+            <span class="experiment-tenders">Patricia Parkinson, Roxanna Shohadaee</span>
+          </div>
+        </div>
+        <div class="happening-pulse">
+          <h3>The Pulse</h3>
+          <div class="pulse-items">
+            <div class="pulse-item">
+              <span class="pulse-text"><strong>3 new members</strong> joined this month</span>
+            </div>
+            <div class="pulse-item">
+              <span class="pulse-text"><strong>2 new resources</strong> added to the Knowledge Commons</span>
+            </div>
+            <div class="pulse-item">
+              <span class="pulse-text">The Federated Knowledge experiment completed its <strong>first integration test</strong></span>
+            </div>
+            <div class="pulse-item">
+              <span class="pulse-text">Next gathering: <strong>April 8, 2026</strong> — Steward Transition</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 6. BECOME A MEMBER ═══ -->
+    <section class="join-cta">
+      <h2>The further you walk in, the more opens up.</h2>
+      <p>Members can query the full knowledge base, join experiments, and shape what gets built.</p>
+      <a href="join.html" class="btn btn--large btn--primary"><span class="btn-label">Become a member</span> &rarr;</a>
+    </section>
+
+  </div><!-- /map-page -->
+
+  <script src="logo-canvas.js"></script>
+  <script src="canvas.js"></script>
+  <script src="script.js"></script>
+  <script>
+    initCanvas(4);
+  </script>
+
+  <!-- ═══ ECOSYSTEM CANVAS — Force-directed network graph ═══ -->
+  <script>
+  (function () {
+    "use strict";
+
+    // ─── Theme-aware palettes (mirrors canvas.js) ─────────────────────────
+    var PALETTES = {
+      dark: {
+        bg:      "rgba(13,16,10,0)",
+        forest:  { r: 122, g: 170, b: 106 },
+        moss:    { r: 142, g: 196, b: 114 },
+        copper:  { r: 196, g: 120, b: 56  },
+        teal:    { r: 72,  g: 184, b: 144 },
+        gold:    { r: 212, g: 160, b: 48  },
+        signal:  { r: 90,  g: 172, b: 204 },
+        text:    "rgba(237,229,212,0.85)",
+        textDim: "rgba(237,229,212,0.45)",
+        edge:    0.12
+      },
+      light: {
+        bg:      "rgba(237,229,212,0)",
+        forest:  { r: 30,  g: 58,  b: 16  },
+        moss:    { r: 60,  g: 98,  b: 22  },
+        copper:  { r: 148, g: 72,  b: 24  },
+        teal:    { r: 26,  g: 120, b: 96  },
+        gold:    { r: 168, g: 112, b: 16  },
+        signal:  { r: 42,  g: 104, b: 136 },
+        text:    "rgba(30,36,24,0.85)",
+        textDim: "rgba(30,36,24,0.45)",
+        edge:    0.18
+      }
+    };
+
+    var theme = document.documentElement.getAttribute("data-theme") || "dark";
+    var P = PALETTES[theme];
+
+    window.addEventListener("theme-change", function (e) {
+      theme = e.detail.theme;
+      P = PALETTES[theme];
+      settled = false;
+      settleCount = 0;
+    });
+
+    // ─── Canvas setup ─────────────────────────────────────────────────────
+    var canvas = document.getElementById("ecosystem-canvas");
+    if (!canvas) return;
+    var ctx = canvas.getContext("2d");
+    var wrap = canvas.parentElement;
+    var tooltip = document.getElementById("eco-tooltip");
+    var tooltipName = document.getElementById("eco-tooltip-name");
+    var tooltipRole = document.getElementById("eco-tooltip-role");
+
+    var W, H, dpr;
+    function resize() {
+      dpr = window.devicePixelRatio || 1;
+      var rect = wrap.getBoundingClientRect();
+      W = rect.width;
+      H = rect.height || 500;
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      canvas.style.width = W + "px";
+      canvas.style.height = H + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      // re-settle after resize
+      settled = false;
+      settleCount = 0;
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    // ─── Color helper ─────────────────────────────────────────────────────
+    function rgb(c, a) {
+      return "rgba(" + c.r + "," + c.g + "," + c.b + "," + (a !== undefined ? a : 1) + ")";
+    }
+
+    // ─── Node / edge data ─────────────────────────────────────────────────
+    // type: "org" (larger) or "person" (smaller)
+    var nodeData = [
+      // Organizations
+      { id: "regen",      label: "Regen Network",    type: "org",    color: "forest", role: "Knowledge, Infrastructure" },
+      { id: "refi",       label: "ReFi DAO",         type: "org",    color: "teal",   role: "Knowledge, Community" },
+      { id: "opencivics", label: "OpenCivics",       type: "org",    color: "copper", role: "Governance, Coordination" },
+      { id: "greenpill",  label: "Greenpill Network", type: "org",   color: "gold",   role: "Knowledge, Education" },
+      { id: "gaiaai",     label: "GaiaAI",           type: "org",    color: "teal",   role: "Infrastructure, AI" },
+      { id: "mill",       label: "Mill Law Center",  type: "org",    color: "copper", role: "Governance, Legal" },
+      // Individuals
+      { id: "patricia",   label: "Patricia Parkinson",  type: "person", color: "copper", role: "Coordination, Brand" },
+      { id: "gregory",    label: "Gregory Landua",      type: "person", color: "forest", role: "Governance, Knowledge" },
+      { id: "monty",      label: "Monty Bryant",        type: "person", color: "forest", role: "Governance, Coordination" },
+      { id: "eve",        label: "Eve Marenghi",        type: "person", color: "forest", role: "Coordination" },
+      { id: "roxanna",    label: "Roxanna Shohadaee",   type: "person", color: "gold",   role: "Identity, Design" }
+    ];
+
+    var edgeData = [
+      // Regen Network connections
+      ["regen", "gregory"],
+      ["regen", "monty"],
+      ["regen", "eve"],
+      ["regen", "gaiaai"],
+      ["regen", "refi"],
+      // ReFi DAO connections
+      ["refi", "monty"],
+      // OpenCivics connections
+      ["opencivics", "mill"],
+      ["opencivics", "patricia"],
+      // GaiaAI connections
+      ["gaiaai", "patricia"],
+      // Patricia connections
+      ["patricia", "roxanna"],
+      ["patricia", "regen"],
+      // Gregory connections
+      ["gregory", "opencivics"],
+      // Greenpill connections
+      ["greenpill", "refi"],
+      ["greenpill", "regen"],
+      // Mill connections
+      ["mill", "regen"]
+    ];
+
+    // ─── Build simulation nodes ───────────────────────────────────────────
+    var nodes = [];
+    var nodeMap = {};
+    var edges = [];
+
+    function initGraph() {
+      nodes = [];
+      nodeMap = {};
+      edges = [];
+      var cx = W / 2, cy = H / 2;
+      for (var i = 0; i < nodeData.length; i++) {
+        var d = nodeData[i];
+        var r = d.type === "org" ? 18 : 10;
+        var angle = (i / nodeData.length) * Math.PI * 2;
+        var spread = d.type === "org" ? 140 : 100;
+        var n = {
+          id: d.id,
+          label: d.label,
+          type: d.type,
+          colorKey: d.color,
+          role: d.role,
+          r: r,
+          x: cx + Math.cos(angle) * spread + (Math.random() - 0.5) * 60,
+          y: cy + Math.sin(angle) * spread + (Math.random() - 0.5) * 40,
+          vx: 0,
+          vy: 0
+        };
+        nodes.push(n);
+        nodeMap[d.id] = n;
+      }
+      for (var j = 0; j < edgeData.length; j++) {
+        var src = nodeMap[edgeData[j][0]];
+        var tgt = nodeMap[edgeData[j][1]];
+        if (src && tgt) edges.push({ source: src, target: tgt });
+      }
+    }
+    initGraph();
+
+    // ─── Force simulation ─────────────────────────────────────────────────
+    var REPULSION = 3200;
+    var SPRING_K = 0.008;
+    var SPRING_LEN = 120;
+    var DAMPING = 0.85;
+    var GRAVITY = 0.002;
+    var settled = false;
+    var settleCount = 0;
+
+    function simulate() {
+      var cx = W / 2, cy = H / 2;
+      var i, j, n, m, dx, dy, dist, force, ex, ey;
+
+      // Repulsion between all node pairs
+      for (i = 0; i < nodes.length; i++) {
+        n = nodes[i];
+        for (j = i + 1; j < nodes.length; j++) {
+          m = nodes[j];
+          dx = n.x - m.x;
+          dy = n.y - m.y;
+          dist = Math.sqrt(dx * dx + dy * dy) || 1;
+          force = REPULSION / (dist * dist);
+          ex = (dx / dist) * force;
+          ey = (dy / dist) * force;
+          n.vx += ex;
+          n.vy += ey;
+          m.vx -= ex;
+          m.vy -= ey;
+        }
+      }
+
+      // Spring attraction along edges
+      for (i = 0; i < edges.length; i++) {
+        var s = edges[i].source;
+        var t = edges[i].target;
+        dx = t.x - s.x;
+        dy = t.y - s.y;
+        dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        force = (dist - SPRING_LEN) * SPRING_K;
+        ex = (dx / dist) * force;
+        ey = (dy / dist) * force;
+        s.vx += ex;
+        s.vy += ey;
+        t.vx -= ex;
+        t.vy -= ey;
+      }
+
+      // Gravity toward center
+      for (i = 0; i < nodes.length; i++) {
+        n = nodes[i];
+        n.vx += (cx - n.x) * GRAVITY;
+        n.vy += (cy - n.y) * GRAVITY;
+      }
+
+      // Update positions
+      var totalV = 0;
+      for (i = 0; i < nodes.length; i++) {
+        n = nodes[i];
+        n.vx *= DAMPING;
+        n.vy *= DAMPING;
+        n.x += n.vx;
+        n.y += n.vy;
+        // Constrain to canvas
+        var pad = n.r + 4;
+        if (n.x < pad) { n.x = pad; n.vx *= -0.5; }
+        if (n.x > W - pad) { n.x = W - pad; n.vx *= -0.5; }
+        if (n.y < pad) { n.y = pad; n.vy *= -0.5; }
+        if (n.y > H - pad) { n.y = H - pad; n.vy *= -0.5; }
+        totalV += Math.abs(n.vx) + Math.abs(n.vy);
+      }
+
+      if (totalV < 0.5) {
+        settleCount++;
+        if (settleCount > 10) settled = true;
+      } else {
+        settleCount = 0;
+      }
+    }
+
+    // Initial settling
+    for (var s = 0; s < 100; s++) simulate();
+    settled = true;
+
+    // ─── Breathing / drift ────────────────────────────────────────────────
+    var breathTime = 0;
+    function breathe() {
+      breathTime += 0.01;
+      for (var i = 0; i < nodes.length; i++) {
+        var n = nodes[i];
+        n.vx += Math.sin(breathTime + i * 1.7) * 0.03;
+        n.vy += Math.cos(breathTime + i * 2.3) * 0.03;
+      }
+    }
+
+    // ─── Hover state ──────────────────────────────────────────────────────
+    var hoveredNode = null;
+    var hoveredEdges = [];
+
+    function getNodeAt(mx, my) {
+      for (var i = nodes.length - 1; i >= 0; i--) {
+        var n = nodes[i];
+        var dx = mx - n.x;
+        var dy = my - n.y;
+        var hitR = n.r + 6; // a little extra for easier hover
+        if (dx * dx + dy * dy < hitR * hitR) return n;
+      }
+      return null;
+    }
+
+    function getEdgesFor(node) {
+      var result = [];
+      for (var i = 0; i < edges.length; i++) {
+        if (edges[i].source === node || edges[i].target === node) {
+          result.push(edges[i]);
+        }
+      }
+      return result;
+    }
+
+    function getConnectedNodes(node) {
+      var set = {};
+      set[node.id] = true;
+      var ee = getEdgesFor(node);
+      for (var i = 0; i < ee.length; i++) {
+        set[ee[i].source.id] = true;
+        set[ee[i].target.id] = true;
+      }
+      return set;
+    }
+
+    canvas.addEventListener("mousemove", function (e) {
+      var rect = canvas.getBoundingClientRect();
+      var mx = e.clientX - rect.left;
+      var my = e.clientY - rect.top;
+      var hit = getNodeAt(mx, my);
+      if (hit !== hoveredNode) {
+        hoveredNode = hit;
+        hoveredEdges = hit ? getEdgesFor(hit) : [];
+        if (hit && tooltip) {
+          tooltipName.textContent = hit.label;
+          tooltipRole.textContent = hit.role;
+          tooltip.style.display = "block";
+        } else if (tooltip) {
+          tooltip.style.display = "none";
+        }
+      }
+      if (hit && tooltip) {
+        tooltip.style.left = (mx + 16) + "px";
+        tooltip.style.top = (my - 10) + "px";
+        // keep tooltip within wrap bounds
+        var wrapRect = wrap.getBoundingClientRect();
+        var tipRect = tooltip.getBoundingClientRect();
+        if (tipRect.right > wrapRect.right - 8) {
+          tooltip.style.left = (mx - tipRect.width - 10) + "px";
+        }
+        if (tipRect.bottom > wrapRect.bottom - 8) {
+          tooltip.style.top = (my - tipRect.height - 10) + "px";
+        }
+      }
+      canvas.style.cursor = hit ? "pointer" : "default";
+    });
+
+    canvas.addEventListener("mouseleave", function () {
+      hoveredNode = null;
+      hoveredEdges = [];
+      if (tooltip) tooltip.style.display = "none";
+      canvas.style.cursor = "default";
+    });
+
+    // ─── Draw ─────────────────────────────────────────────────────────────
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+
+      var connectedSet = hoveredNode ? getConnectedNodes(hoveredNode) : null;
+
+      // Draw edges
+      for (var i = 0; i < edges.length; i++) {
+        var e = edges[i];
+        var isHighlighted = hoveredNode && (e.source === hoveredNode || e.target === hoveredNode);
+        var isDimmed = hoveredNode && !isHighlighted;
+        var c = P[e.source.colorKey] || P.forest;
+        var alpha = isHighlighted ? 0.6 : (isDimmed ? P.edge * 0.3 : P.edge);
+        var lw = isHighlighted ? 1.5 : 0.7;
+
+        ctx.beginPath();
+        ctx.moveTo(e.source.x, e.source.y);
+        ctx.lineTo(e.target.x, e.target.y);
+        ctx.strokeStyle = rgb(c, alpha);
+        ctx.lineWidth = lw;
+        ctx.stroke();
+      }
+
+      // Draw nodes
+      for (var j = 0; j < nodes.length; j++) {
+        var n = nodes[j];
+        var c2 = P[n.colorKey] || P.forest;
+        var isHovered = hoveredNode === n;
+        var isConnected = connectedSet && connectedSet[n.id];
+        var isDim = hoveredNode && !isConnected;
+        var nodeAlpha = isDim ? 0.2 : (isHovered ? 1 : 0.85);
+        var nodeR = isHovered ? n.r * 1.2 : n.r;
+
+        // Glow for hovered
+        if (isHovered) {
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, nodeR + 6, 0, Math.PI * 2);
+          ctx.fillStyle = rgb(c2, 0.12);
+          ctx.fill();
+        }
+
+        // Node circle
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, nodeR, 0, Math.PI * 2);
+        ctx.fillStyle = rgb(c2, nodeAlpha * 0.3);
+        ctx.fill();
+        ctx.strokeStyle = rgb(c2, nodeAlpha);
+        ctx.lineWidth = isHovered ? 2 : 1.2;
+        ctx.stroke();
+
+        // Inner dot
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, nodeR * 0.35, 0, Math.PI * 2);
+        ctx.fillStyle = rgb(c2, nodeAlpha * 0.8);
+        ctx.fill();
+
+        // Label (orgs always, persons only when not dimmed or when hovered/connected)
+        if (n.type === "org" || isHovered || (isConnected && hoveredNode)) {
+          var labelAlpha = isDim ? 0.15 : (isHovered ? 1 : 0.7);
+          ctx.font = (n.type === "org" ? "500 11px" : "400 10px") + " 'Space Grotesk', sans-serif";
+          ctx.fillStyle = isDim ? P.textDim : P.text;
+          ctx.globalAlpha = labelAlpha;
+          ctx.textAlign = "center";
+          ctx.fillText(n.label, n.x, n.y + nodeR + 14);
+          ctx.globalAlpha = 1;
+        }
+      }
+    }
+
+    // ─── Animation loop ───────────────────────────────────────────────────
+    function loop() {
+      if (!settled) {
+        simulate();
+      } else {
+        breathe();
+        // Micro-simulate to apply breath forces
+        for (var i = 0; i < nodes.length; i++) {
+          var n = nodes[i];
+          n.vx *= 0.92;
+          n.vy *= 0.92;
+          n.x += n.vx;
+          n.y += n.vy;
+          var pad = n.r + 4;
+          if (n.x < pad) n.x = pad;
+          if (n.x > W - pad) n.x = W - pad;
+          if (n.y < pad) n.y = pad;
+          if (n.y > H - pad) n.y = H - pad;
+        }
+      }
+      draw();
+      requestAnimationFrame(loop);
+    }
+    loop();
+
+  })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Regen Commons — Learning</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,700;1,9..144,400&family=Source+Serif+4:ital,wght@0,380;0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script>(function(){var t=localStorage.getItem('rc-theme')||'dark';document.documentElement.setAttribute('data-theme',t)})()</script>
+
+  <style>
+    /* ── HORIZONTAL SCROLL LEARN PAGE ────────────────────────────────────── */
+
+    body[data-page="learn"] {
+      overflow: hidden;
+    }
+
+    .learn-scroll {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      width: 500vw; /* 5 panels */
+      height: 100vh;
+      overflow: visible;
+    }
+
+    .learn-viewport {
+      position: fixed;
+      inset: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .learn-viewport::-webkit-scrollbar { display: none; }
+
+    .panel {
+      flex: 0 0 100vw;
+      width: 100vw;
+      min-height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(2rem, 6vw, 5rem);
+      position: relative;
+    }
+
+    .panel-inner {
+      max-width: 620px;
+      width: 100%;
+      text-align: center;
+      background: var(--paper);
+      border: 1px solid rgba(var(--copper-rgb), 0.15);
+      padding: clamp(2rem, 4vw, 3.5rem);
+      position: relative;
+    }
+
+    /* ── PROGRESS DOTS ───────────────────────────────────────────────────── */
+
+    .learn-progress {
+      position: fixed;
+      top: 2.2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      display: flex;
+      gap: 0.7rem;
+      align-items: center;
+    }
+
+    .learn-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--vellum);
+      border: 1px solid var(--ink-dim);
+      transition: background 0.4s, border-color 0.4s, transform 0.4s;
+      cursor: pointer;
+    }
+    .learn-dot.active {
+      background: var(--forest);
+      border-color: var(--forest);
+      transform: scale(1.3);
+    }
+
+    /* ── ARROW NAVIGATION ────────────────────────────────────────────────── */
+
+    .nav-arrow {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+      background: none;
+      border: 1.5px solid rgba(var(--copper-rgb), 0.25);
+      color: var(--ink-mid);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: border-color 0.3s, color 0.3s, opacity 0.3s;
+      font-size: 1.1rem;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .nav-arrow:hover {
+      border-color: var(--forest);
+      color: var(--forest);
+    }
+    .nav-arrow.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .nav-arrow-left  { left: 1.5rem; }
+    .nav-arrow-right { right: 1.5rem; }
+
+    /* ── EYEBROW / TYPOGRAPHY ────────────────────────────────────────────── */
+
+    .eyebrow {
+      font-family: 'Space Grotesk', var(--font-mono);
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.6rem;
+      display: block;
+    }
+
+    .panel h2 {
+      font-family: 'Fraunces', var(--font-serif);
+      font-size: clamp(1.7rem, 3.8vw, 2.6rem);
+      font-weight: 300;
+      font-style: normal;
+      line-height: 1.2;
+      color: var(--ink);
+      margin-bottom: 1.8rem;
+      letter-spacing: -0.01em;
+    }
+
+    .panel p {
+      font-family: 'Source Serif 4', var(--font-serif);
+      font-size: 1.05rem;
+      line-height: 1.95;
+      color: var(--ink-mid);
+      margin-bottom: 1.6em;
+    }
+    .panel p:last-child { margin-bottom: 0; }
+
+    .pivot {
+      margin-top: 2rem;
+      padding-top: 1.8rem;
+      border-top: 1px solid rgba(var(--copper-rgb), 0.12);
+    }
+
+    /* ── PRACTICE CARD ───────────────────────────────────────────────────── */
+
+    .practice-card {
+      margin-top: 2rem;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 1.4rem 1.6rem;
+      border: 1px solid rgba(var(--copper-rgb), 0.25);
+      background: var(--vellum);
+      position: relative;
+      transform: rotate(-1.2deg);
+      max-width: 380px;
+      text-align: left;
+      transition: transform 0.4s cubic-bezier(.25,1,.5,1);
+    }
+    .practice-card:hover {
+      transform: rotate(0deg);
+    }
+    .practice-card::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border: 1px dashed rgba(var(--copper-rgb), 0.12);
+      pointer-events: none;
+    }
+
+    .practice-card-label {
+      font-family: 'Space Grotesk', var(--font-mono);
+      font-size: 0.55rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--copper);
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+
+    .practice-card h3 {
+      font-family: 'Fraunces', var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--ink);
+      margin-bottom: 0.9rem;
+      line-height: 1.3;
+    }
+
+    .practice-card p {
+      font-size: 0.92rem;
+      line-height: 1.85;
+      color: var(--ink-mid);
+      margin-bottom: 0;
+    }
+
+    /* ── SEED DOTS (replace glimpse cards) ───────────────────────────────── */
+
+    .panel-inner--glimpse {
+      min-height: 340px;
+    }
+
+    .seed-dots {
+      position: relative;
+      height: 180px;
+      margin-top: 2rem;
+    }
+
+    .seed-dot {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--forest);
+      opacity: 0.6;
+      cursor: pointer;
+      transition: transform 0.3s, opacity 0.3s, box-shadow 0.3s;
+    }
+    .seed-dot:hover {
+      transform: scale(1.8);
+      opacity: 1;
+      box-shadow: 0 0 12px rgba(var(--forest-rgb), 0.4);
+    }
+
+    /* Position each dot pseudo-randomly across the field */
+    .seed-dot:nth-child(1) { left: 15%; top: 30%; background: var(--copper); }
+    .seed-dot:nth-child(2) { left: 42%; top: 55%; background: var(--forest); }
+    .seed-dot:nth-child(3) { left: 70%; top: 25%; background: var(--teal); }
+    .seed-dot:nth-child(4) { left: 28%; top: 70%; background: var(--gold); }
+    .seed-dot:nth-child(5) { left: 58%; top: 75%; background: var(--forest); }
+    .seed-dot:nth-child(6) { left: 82%; top: 50%; background: var(--copper); }
+    .seed-dot:nth-child(7) { left: 48%; top: 15%; background: var(--teal); }
+
+    .seed-tooltip {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--vellum);
+      border: 1px solid rgba(var(--copper-rgb), 0.25);
+      padding: 1.2rem 1.4rem;
+      max-width: 320px;
+      width: 90%;
+      text-align: left;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .seed-tooltip-title {
+      font-family: 'Fraunces', var(--font-serif);
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--ink);
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+    .seed-tooltip-desc {
+      font-family: 'Source Serif 4', var(--font-serif);
+      font-size: 0.8rem;
+      color: var(--ink-mid);
+      line-height: 1.6;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+    .seed-tooltip-by {
+      font-family: 'Space Grotesk', var(--font-mono);
+      font-size: 0.5rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      display: block;
+    }
+
+    /* ── CHOICE POINT (Panel 5) ──────────────────────────────────────────── */
+
+    .choice-point {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      max-width: 520px;
+    }
+
+    .choice-point h2 {
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 300;
+      margin-bottom: 1.4rem;
+    }
+
+    .choice-point .subtext {
+      font-family: 'Source Serif 4', var(--font-serif);
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: var(--ink-mid);
+      margin-bottom: 1.2rem;
+    }
+
+    .choice-point .seed-text {
+      font-family: 'Source Serif 4', var(--font-serif);
+      font-size: 0.9rem;
+      font-style: italic;
+      color: var(--ink-dim);
+      margin-bottom: 2.8rem;
+    }
+
+    .btn-plant {
+      display: inline-block;
+      font-family: 'Space Grotesk', var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.20em;
+      text-transform: uppercase;
+      padding: 1.1rem 2.8rem;
+      border: 1.5px solid var(--forest);
+      background: none;
+      color: var(--forest);
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.35s, color 0.35s, box-shadow 0.35s;
+    }
+    .btn-plant:hover {
+      background: var(--forest);
+      color: var(--paper);
+      box-shadow: 0 0 24px rgba(var(--forest-rgb), 0.2);
+    }
+
+    /* ── PANEL ENTRANCE ANIMATION ────────────────────────────────────────── */
+
+    .panel-inner {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .panel.in-view .panel-inner {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────────────────────────── */
+
+    @media (max-width: 680px) {
+      .nav-arrow { display: none; }
+      .panel { padding: 5rem 1.5rem 3rem; }
+      .practice-card { transform: rotate(-0.6deg); }
+    }
+  </style>
+</head>
+<body data-page="learn">
+
+  <a href="index.html" class="logo-mark" data-easter-egg>
+    <canvas id="logo-canvas" width="76" height="76"></canvas>
+    <span class="logo-mark-label">Regen Commons</span>
+  </a>
+
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
+    <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+
+  <canvas id="mycelium-canvas"></canvas>
+
+  <!-- Progress dots -->
+  <nav class="learn-progress" aria-label="Step progress">
+    <span class="learn-dot active" data-panel="0"></span>
+    <span class="learn-dot" data-panel="1"></span>
+    <span class="learn-dot" data-panel="2"></span>
+    <span class="learn-dot" data-panel="3"></span>
+    <span class="learn-dot" data-panel="4"></span>
+  </nav>
+
+  <!-- Arrow navigation -->
+  <button class="nav-arrow nav-arrow-left hidden" id="arrow-left" aria-label="Previous panel">&#8592;</button>
+  <button class="nav-arrow nav-arrow-right" id="arrow-right" aria-label="Next panel">&#8594;</button>
+
+  <!-- Horizontal scroll viewport -->
+  <div class="learn-viewport" id="learn-viewport">
+    <div class="learn-scroll">
+
+      <!-- Panel 1: RECOGNIZE -->
+      <section class="panel in-view" id="panel-0">
+        <div class="panel-inner">
+          <span class="eyebrow">Already a commoner</span>
+          <h2>How much of your life is already a commons?</h2>
+          <p>The air you breathe. The language you speak. The knowledge passed down by people you'll never meet. Commoning isn't something new. It's something to remember.</p>
+          <div class="pivot">
+            <p>And yet — the knowledge the regenerative movement most needs stays scattered. Governance frameworks rebuilt from scratch. Coordination patterns lost when projects end. What would change if they were gathered?</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Panel 2: PRACTICE -->
+      <section class="panel" id="panel-1">
+        <div class="panel-inner">
+          <span class="eyebrow">Tending the commons</span>
+          <h2>Tending is a practice.</h2>
+          <p>Commoning isn't joining an organization. It's choosing, daily, to share what you know, tend what you didn't plant, and hold things in trust rather than ownership.</p>
+
+          <div class="practice-card">
+            <span class="practice-card-label">Commoning practice</span>
+            <h3>Tend what you didn't plant</h3>
+            <p>Find something in the commons that someone else contributed. Use it. Improve it. Pass it forward. The value of shared knowledge grows with each hand that touches it.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Panel 3: ENCOURAGE -->
+      <section class="panel" id="panel-2">
+        <div class="panel-inner">
+          <span class="eyebrow">We each have a role</span>
+          <h2>The regenerative movement doesn't need another platform. It needs shared ground.</h2>
+          <p>Where your knowledge stands beside others'. Where experiments can fail safely. Where the invisible labor of coordination becomes visible. You don't have to carry everything alone.</p>
+        </div>
+      </section>
+
+      <!-- Panel 4: GLIMPSE -->
+      <section class="panel" id="panel-3">
+        <div class="panel-inner panel-inner--glimpse">
+          <span class="eyebrow">Already in the ground</span>
+          <h2>Here's what's been planted.</h2>
+          <p>Hover over the seeds to see what's growing.</p>
+          <div class="seed-dots" id="learn-seed-dots">
+            <div class="seed-dot" data-title="Indexed Knowledge Base" data-desc="76,000+ documents from across the regenerative movement, searchable and structured." data-by="Regen Network"></div>
+            <div class="seed-dot" data-title="Governance Frameworks" data-desc="Templates, decision protocols, and institutional design patterns tested in practice." data-by="OpenCivics"></div>
+            <div class="seed-dot" data-title="Coordination Patterns" data-desc="Meeting rhythms, facilitation guides, and coordination tools for distributed teams." data-by="Regen Commons Stewards"></div>
+            <div class="seed-dot" data-title="CopyFair License" data-desc="Open license for commons-held knowledge. Free use within the commons, derivatives shared back." data-by="OpenCivics"></div>
+            <div class="seed-dot" data-title="KOI Protocol" data-desc="Federated knowledge infrastructure. Cross-commons querying and shared indexing." data-by="GaiaAI"></div>
+            <div class="seed-dot" data-title="Brand Identity System" data-desc="Visual language, tone, typography, and design patterns for the Regen Commons identity." data-by="Patricia Parkinson"></div>
+            <div class="seed-dot" data-title="Steward Questionnaire" data-desc="Methodology for surfacing steward perspectives, tensions, and convergent themes." data-by="Regen Commons Stewards"></div>
+          </div>
+          <div class="seed-tooltip" id="seed-tooltip" style="display:none;">
+            <span class="seed-tooltip-title"></span>
+            <span class="seed-tooltip-desc"></span>
+            <span class="seed-tooltip-by"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Panel 5: CHOICE POINT -->
+      <section class="panel" id="panel-4">
+        <div class="choice-point">
+          <h2>There's a map here.</h2>
+          <p class="subtext">We ask everyone who enters to plant something first.</p>
+          <p class="seed-text">A vision. A sentence. A seed.</p>
+          <a href="declaration.html" class="btn-plant">Plant yours &rarr;</a>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="logo-canvas.js"></script>
+  <script src="canvas.js"></script>
+  <script src="script.js"></script>
+  <script>initCanvas(2);</script>
+
+  <script>
+  (function () {
+    const viewport = document.getElementById('learn-viewport');
+    const panels = document.querySelectorAll('.panel');
+    const dots = document.querySelectorAll('.learn-dot');
+    const arrowLeft = document.getElementById('arrow-left');
+    const arrowRight = document.getElementById('arrow-right');
+    const totalPanels = panels.length;
+    let currentIndex = 0;
+
+    /* ── Navigate to panel ─────────────────────────────────────────────── */
+    function goTo(index) {
+      if (index < 0 || index >= totalPanels) return;
+      currentIndex = index;
+      panels[index].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+      updateUI();
+    }
+
+    function updateUI() {
+      // Dots
+      dots.forEach(function (d, i) {
+        d.classList.toggle('active', i === currentIndex);
+      });
+      // Arrows
+      arrowLeft.classList.toggle('hidden', currentIndex === 0);
+      arrowRight.classList.toggle('hidden', currentIndex === totalPanels - 1);
+      // Panel entrance
+      panels.forEach(function (p, i) {
+        p.classList.toggle('in-view', i === currentIndex);
+      });
+    }
+
+    /* ── Arrow click ───────────────────────────────────────────────────── */
+    arrowLeft.addEventListener('click', function () { goTo(currentIndex - 1); });
+    arrowRight.addEventListener('click', function () { goTo(currentIndex + 1); });
+
+    /* ── Dot click ─────────────────────────────────────────────────────── */
+    dots.forEach(function (dot) {
+      dot.addEventListener('click', function () {
+        goTo(parseInt(dot.dataset.panel, 10));
+      });
+    });
+
+    /* ── Keyboard navigation ───────────────────────────────────────────── */
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight' || e.key === 'Right') { e.preventDefault(); goTo(currentIndex + 1); }
+      if (e.key === 'ArrowLeft'  || e.key === 'Left')  { e.preventDefault(); goTo(currentIndex - 1); }
+    });
+
+    /* ── Scroll-based detection (catches manual scroll / trackpad) ──── */
+    var scrollTimer;
+    viewport.addEventListener('scroll', function () {
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(function () {
+        var scrollLeft = viewport.scrollLeft;
+        var panelWidth = window.innerWidth;
+        var newIndex = Math.round(scrollLeft / panelWidth);
+        if (newIndex !== currentIndex && newIndex >= 0 && newIndex < totalPanels) {
+          currentIndex = newIndex;
+          updateUI();
+        }
+      }, 60);
+    }, { passive: true });
+
+    /* ── Init ──────────────────────────────────────────────────────────── */
+    updateUI();
+  })();
+  </script>
+
+  <script>
+  // ── Seed dot hover interaction ──
+  (function() {
+    var dots = document.querySelectorAll('.seed-dot');
+    var tooltip = document.getElementById('seed-tooltip');
+    if (!tooltip || !dots.length) return;
+
+    var titleEl = tooltip.querySelector('.seed-tooltip-title');
+    var descEl = tooltip.querySelector('.seed-tooltip-desc');
+    var byEl = tooltip.querySelector('.seed-tooltip-by');
+
+    dots.forEach(function(dot) {
+      dot.addEventListener('mouseenter', function() {
+        titleEl.textContent = dot.dataset.title;
+        descEl.textContent = dot.dataset.desc;
+        byEl.textContent = 'Contributed by ' + dot.dataset.by;
+        tooltip.style.display = 'block';
+      });
+      dot.addEventListener('mouseleave', function() {
+        tooltip.style.display = 'none';
+      });
+    });
+  })();
+  </script>
+
+</body>
+</html>

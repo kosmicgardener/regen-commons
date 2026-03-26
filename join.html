@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Regen Commons — Join the Commons</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,700;1,9..144,400&family=Source+Serif+4:ital,wght@0,380;0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script>(function(){var t=localStorage.getItem('rc-theme')||'dark';document.documentElement.setAttribute('data-theme',t)})()</script>
+</head>
+<body data-page="join">
+
+  <a href="index.html" class="logo-mark" data-easter-egg>
+    <canvas id="logo-canvas" width="76" height="76"></canvas>
+    <span class="logo-mark-label">Regen Commons</span>
+  </a>
+
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
+    <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+
+  <canvas id="mycelium-canvas"></canvas>
+
+  <div class="join-page">
+
+    <!-- ── Progress ── -->
+    <div class="join-progress">
+      <div class="join-step-dot active" data-step="1"></div>
+      <div class="join-step-line"></div>
+      <div class="join-step-dot" data-step="2"></div>
+      <div class="join-step-line"></div>
+      <div class="join-step-dot" data-step="3"></div>
+      <div class="join-step-line"></div>
+      <div class="join-step-dot" data-step="4"></div>
+    </div>
+
+    <form class="join-form" id="join-form" novalidate>
+
+      <!-- ══════════ STEP 1: WHO YOU ARE ══════════ -->
+      <div class="join-step active" data-step="1">
+        <span class="join-eyebrow">Step 1 of 4</span>
+        <h1 class="join-heading">Who are you?</h1>
+        <p class="join-intro">The commons is held by people and organizations. Tell us who's arriving.</p>
+
+        <div class="join-field">
+          <label class="join-label" for="member-type">I'm joining as</label>
+          <div class="join-toggle-group">
+            <button type="button" class="join-toggle active" data-value="individual">An individual</button>
+            <button type="button" class="join-toggle" data-value="organization">An organization</button>
+          </div>
+          <input type="hidden" name="member-type" id="member-type" value="individual" />
+        </div>
+
+        <div class="join-field">
+          <label class="join-label" for="full-name">Your name</label>
+          <input type="text" id="full-name" name="full-name" class="join-input" placeholder="First and last name" required />
+        </div>
+
+        <div class="join-field join-org-fields" style="display:none;">
+          <label class="join-label" for="org-name">Organization name</label>
+          <input type="text" id="org-name" name="org-name" class="join-input" placeholder="Your organization or project" />
+        </div>
+
+        <div class="join-field join-org-fields" style="display:none;">
+          <label class="join-label" for="org-role">Your role</label>
+          <input type="text" id="org-role" name="org-role" class="join-input" placeholder="e.g. Co-founder, Director, Researcher" />
+        </div>
+
+        <div class="join-field">
+          <label class="join-label" for="email">Email</label>
+          <input type="email" id="email" name="email" class="join-input" placeholder="you@example.com" required />
+        </div>
+
+        <div class="join-field">
+          <label class="join-label" for="location">Where are you based?</label>
+          <input type="text" id="location" name="location" class="join-input" placeholder="City, region, or 'nomadic'" />
+        </div>
+
+        <div class="join-nav">
+          <span></span>
+          <button type="button" class="btn join-next" data-to="2"><span class="btn-label">Continue</span> &rarr;</button>
+        </div>
+      </div>
+
+      <!-- ══════════ STEP 2: YOUR WORK ══════════ -->
+      <div class="join-step" data-step="2">
+        <span class="join-eyebrow">Step 2 of 4</span>
+        <h1 class="join-heading">What do you tend?</h1>
+        <p class="join-intro">We don't need a CV. We want to understand the ground you're already working.</p>
+
+        <div class="join-field">
+          <label class="join-label" for="work-description">Describe your regenerative work</label>
+          <textarea id="work-description" name="work-description" class="join-textarea" rows="3" placeholder="What are you building, growing, researching, or repairing? A sentence or two is enough." required></textarea>
+        </div>
+
+        <div class="join-field">
+          <label class="join-label">What areas does your work touch?</label>
+          <p class="join-hint">Select all that apply.</p>
+          <div class="join-checkbox-grid">
+            <label class="join-check"><input type="checkbox" name="domains" value="ecological-restoration" /><span>Ecological restoration</span></label>
+            <label class="join-check"><input type="checkbox" name="domains" value="regenerative-agriculture" /><span>Regenerative agriculture</span></label>
+            <label class="join-check"><input type="checkbox" name="domains" value="governance-coordination" /><span>Governance &amp; coordination</span></label>
+            <label class="join-check"><input type="checkbox" name="domains" value="regenerative-finance" /><span>Regenerative finance</span></label>
+            <label class="join-check"><input type="checkbox" name="domains" value="community-building" /><span>Community building</span></label>
+            <label class="join-check"><input type="checkbox" name="domains" value="education-knowledge" /><span>Education &amp; knowledge</span></label>
+            <label class="join-check"><input type="checkbox" name="domains" value="technology-infrastructure" /><span>Technology &amp; infrastructure</span></label>
+            <label class="join-check"><input type="checkbox" name="domains" value="indigenous-traditional" /><span>Indigenous &amp; traditional knowledge</span></label>
+            <label class="join-check"><input type="checkbox" name="domains" value="health-wellbeing" /><span>Health &amp; wellbeing</span></label>
+            <label class="join-check"><input type="checkbox" name="domains" value="arts-culture" /><span>Arts &amp; culture</span></label>
+            <label class="join-check"><input type="checkbox" name="domains" value="policy-advocacy" /><span>Policy &amp; advocacy</span></label>
+            <label class="join-check"><input type="checkbox" name="domains" value="other" /><span>Other</span></label>
+          </div>
+        </div>
+
+        <div class="join-field">
+          <label class="join-label" for="how-found">How did you find the commons?</label>
+          <input type="text" id="how-found" name="how-found" class="join-input" placeholder="A conversation, a link, a person, a search..." />
+        </div>
+
+        <div class="join-nav">
+          <button type="button" class="join-back" data-to="1">&larr; Back</button>
+          <button type="button" class="btn join-next" data-to="3"><span class="btn-label">Continue</span> &rarr;</button>
+        </div>
+      </div>
+
+      <!-- ══════════ STEP 3: YOUR OFFERING ══════════ -->
+      <div class="join-step" data-step="3">
+        <span class="join-eyebrow">Step 3 of 4</span>
+        <h1 class="join-heading">What do you bring?</h1>
+        <p class="join-intro">The commons grows through what members offer. Not everything at once &mdash; just what feels right to begin with. Contribution before extraction is how this works.</p>
+
+        <div class="join-field">
+          <label class="join-label" for="offering">What could you offer to the commons?</label>
+          <p class="join-hint">Knowledge, frameworks, datasets, governance templates, coordination patterns, research, practice &mdash; anything that others in the movement could build on.</p>
+          <textarea id="offering" name="offering" class="join-textarea" rows="3" placeholder="e.g. 'A library of participatory governance templates we've tested across 12 communities' or 'Five years of soil health monitoring data from our cooperative'" required></textarea>
+        </div>
+
+        <div class="join-field">
+          <label class="join-label">What commons categories would you contribute to?</label>
+          <div class="join-checkbox-grid join-checkbox-grid--narrow">
+            <label class="join-check"><input type="checkbox" name="contribution-areas" value="knowledge" /><span>Knowledge</span></label>
+            <label class="join-check"><input type="checkbox" name="contribution-areas" value="infrastructure" /><span>Infrastructure</span></label>
+            <label class="join-check"><input type="checkbox" name="contribution-areas" value="governance" /><span>Governance &amp; Legal</span></label>
+            <label class="join-check"><input type="checkbox" name="contribution-areas" value="coordination" /><span>Coordination</span></label>
+            <label class="join-check"><input type="checkbox" name="contribution-areas" value="brand" /><span>Brand &amp; IP</span></label>
+          </div>
+        </div>
+
+        <div class="join-field" id="vision-echo-field">
+          <label class="join-label">Your planted vision</label>
+          <p class="join-hint">You planted this seed when you first arrived. It's already part of the commons.</p>
+          <div class="join-vision-echo" id="join-vision-echo"></div>
+        </div>
+
+        <div class="join-nav">
+          <button type="button" class="join-back" data-to="2">&larr; Back</button>
+          <button type="button" class="btn join-next" data-to="4"><span class="btn-label">Continue</span> &rarr;</button>
+        </div>
+      </div>
+
+      <!-- ══════════ STEP 4: COMMITMENT ══════════ -->
+      <div class="join-step" data-step="4">
+        <span class="join-eyebrow">Step 4 of 4</span>
+        <h1 class="join-heading">Your commitment</h1>
+        <p class="join-intro">Membership is a shared commitment. These are the principles that hold the commons together. Read them. If they ring true, this is your place.</p>
+
+        <div class="join-principles">
+          <div class="join-principle">
+            <span class="join-principle-name">Care</span>
+            <span class="join-principle-desc">We tend to the commons and to each other. Care is the operational foundation of any durable collective.</span>
+          </div>
+          <div class="join-principle">
+            <span class="join-principle-name">Stewardship</span>
+            <span class="join-principle-desc">We hold the commons in trust for those who come after us. Not ownership, not control.</span>
+          </div>
+          <div class="join-principle">
+            <span class="join-principle-name">Transparency</span>
+            <span class="join-principle-desc">We iterate in public. We name our developmental stage honestly. We don't present aspiration as fact.</span>
+          </div>
+          <div class="join-principle">
+            <span class="join-principle-name">Reciprocity</span>
+            <span class="join-principle-desc">Benefits flow back to those who nurture the commons. We guard against extraction &mdash; from communities, from labour, from knowledge.</span>
+          </div>
+          <div class="join-principle">
+            <span class="join-principle-name">Plurality</span>
+            <span class="join-principle-desc">We honour many expressions of regenerative practice while sustaining coherence. The commons is a container for multiple definitions.</span>
+          </div>
+          <div class="join-principle">
+            <span class="join-principle-name">Collaboration</span>
+            <span class="join-principle-desc">We build with, not for. No voice dominates the identity.</span>
+          </div>
+          <div class="join-principle">
+            <span class="join-principle-name">Integrity</span>
+            <span class="join-principle-desc">We are what we say we are. Constitution, brand, and lived experience must be aligned.</span>
+          </div>
+        </div>
+
+        <div class="join-agreement">
+          <label class="join-check join-check--agreement">
+            <input type="checkbox" name="agree-values" id="agree-values" required />
+            <span>I align with these values and commit to upholding them as a member of Regen Commons.</span>
+          </label>
+          <label class="join-check join-check--agreement">
+            <input type="checkbox" name="agree-reciprocity" id="agree-reciprocity" required />
+            <span>I commit to reciprocal contribution &mdash; sharing back knowledge, practice, or resources that strengthen the commons.</span>
+          </label>
+          <label class="join-check join-check--agreement">
+            <input type="checkbox" name="agree-license" id="agree-license" required />
+            <span>I understand that commons assets are shared under a CopyFair license &mdash; free use within the commons, with derivative works contributed back.</span>
+          </label>
+        </div>
+
+        <div class="join-nav">
+          <button type="button" class="join-back" data-to="3">&larr; Back</button>
+          <button type="submit" class="btn join-submit" id="join-submit"><span class="btn-label">Join the commons</span> &rarr;</button>
+        </div>
+      </div>
+
+    </form>
+
+    <!-- ══════════ CONFIRMATION ══════════ -->
+    <div class="join-step join-confirmation" data-step="done" id="join-confirmation">
+      <div class="join-confirmation-inner">
+        <span class="join-eyebrow">You're in</span>
+        <h1 class="join-heading">Welcome to the commons.</h1>
+        <p class="join-intro">Your seed is planted. Your name joins the directory. The ground beneath you is shared now &mdash; tended by everyone who's arrived before you and everyone who'll come after.</p>
+        <p class="join-confirmation-quote">The further you walk in, the more opens up.</p>
+        <a href="map.html" class="btn join-enter"><span class="btn-label">See what's inside</span> &rarr;</a>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="logo-canvas.js"></script>
+  <script src="canvas.js"></script>
+  <script src="script.js"></script>
+  <script>initCanvas(2);</script>
+</body>
+</html>
