@@ -116,8 +116,9 @@
     document.querySelectorAll(".btn").forEach(function (btn) {
       // Don't double-inject
       if (btn.querySelector(".btn-blob")) return;
-      // Skip blob on buttons inside declaration cards
+      // Skip blob on buttons inside declaration cards and map page
       if (btn.closest(".declaration-card")) return;
+      if (document.body.dataset.page === "map") return;
 
       // Wrap existing content in a label span
       var label = document.createElement("span");
@@ -414,7 +415,7 @@
       });
     });
 
-    var stageFilters = ["seed", "sprout", "flowering"];
+    var stageFilters = ["seed", "sprout", "flowering", "tree"];
 
     function applyFilter() {
       var isStageFilter = stageFilters.indexOf(activeType) !== -1;

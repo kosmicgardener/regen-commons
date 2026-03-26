@@ -10,9 +10,9 @@
   <link rel="stylesheet" href="style.css" />
   <style>
 .map-page {
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0 clamp(1.5rem, 4vw, 3rem);
+  padding: 0 clamp(2rem, 5vw, 4rem);
 }
 .map-hero {
   text-align: center;
@@ -80,6 +80,9 @@
   position: relative;
   width: 100%;
   margin: 0 auto;
+  background: var(--parchment);
+  border: 1px solid rgba(var(--copper-rgb), 0.1);
+  padding: 1.5rem;
 }
 
 /* Ecosystem tooltip — follows cursor, not bottom-left */
@@ -124,12 +127,15 @@
 .kc-query-input:focus { border-color: var(--teal); }
 .kc-query-input::placeholder { color: var(--ink-dim); }
 
-/* Commons grid — single column masonry, one card open at a time */
+/* Commons grid — two-column layout */
 .commons-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
   margin-top: 1.5rem;
+}
+@media (max-width: 768px) {
+  .commons-grid { grid-template-columns: 1fr; }
 }
 
 /* Filter buttons */
@@ -174,27 +180,35 @@
   padding: 1rem 1.2rem;
   cursor: pointer;
 }
-.card-icon { width: 40px; height: 40px; flex-shrink: 0; margin-top: 0.2rem; }
-.card-header-text { flex: 1; min-width: 0; }
-.card-header-text > * + * { margin-top: 0.15rem; }
+.card-icon { display: none; }
+.card-header-text { flex: 1; min-width: 0; text-align: left; }
 .card-type {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 0.5rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--teal);
+  display: inline-block;
+}
+.card-header-text .experiment-stage {
+  display: inline-block;
+  margin-top: 0.35rem;
+  width: auto;
 }
 .card-name {
   font-family: 'Fraunces', Georgia, serif;
   font-size: 0.95rem;
   font-weight: 500;
   color: var(--ink);
-  margin: 0.2rem 0;
+  margin: 0.25rem 0 0.15rem;
+  display: block;
 }
 .card-teaser {
   font-size: 0.78rem;
   color: var(--ink-mid);
   line-height: 1.5;
+  display: block;
+  margin-top: 0.1rem;
 }
 .card-contributor {
   font-family: 'Space Grotesk', sans-serif;
@@ -203,7 +217,7 @@
   text-transform: uppercase;
   color: var(--ink-dim);
   display: block;
-  margin-top: 0.3rem;
+  margin-top: 0.35rem;
 }
 .card-toggle {
   font-size: 1.2rem;
@@ -234,7 +248,6 @@
 }
 .card-body-inner {
   padding: 0 1.2rem 1.2rem;
-  padding-left: calc(40px + 2.2rem); /* align with text after icon */
 }
 .card-body-inner p {
   font-size: 0.85rem;
@@ -296,6 +309,8 @@
 .commons-card[data-stage="sprout"] .experiment-stage { color: var(--moss); border-color: rgba(var(--forest-rgb), 0.3); }
 .experiment-card[data-stage="flowering"] .experiment-stage,
 .commons-card[data-stage="flowering"] .experiment-stage { color: var(--forest); border-color: rgba(var(--forest-rgb), 0.4); }
+.experiment-card[data-stage="tree"] .experiment-stage,
+.commons-card[data-stage="tree"] .experiment-stage { color: var(--teal); border-color: rgba(var(--teal-rgb), 0.4); }
 .experiment-tenders {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 0.48rem;
@@ -325,6 +340,17 @@
   margin-right: auto;
 }
 
+/* Map page buttons — clean outline, no blob */
+body[data-page="map"] .btn {
+  border: 1.5px solid rgba(var(--copper-rgb), 0.3);
+  border-radius: 2px;
+  transition: border-color 0.3s, background 0.3s, color 0.3s;
+}
+body[data-page="map"] .btn:hover {
+  border-color: var(--teal);
+  background: rgba(var(--teal-rgb), 0.06);
+}
+
 /* Primary button variant */
 .btn--primary {
   border-color: var(--forest);
@@ -335,9 +361,48 @@
   color: var(--paper);
 }
 
+/* Stage legend */
+.stage-legend {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+}
+.stage-legend-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(var(--copper-rgb), 0.1);
+  background: var(--parchment);
+}
+.stage-icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  color: var(--ink-dim);
+}
+.stage-legend-item[data-stage="seed"] .stage-icon { color: var(--gold); }
+.stage-legend-item[data-stage="sprout"] .stage-icon { color: var(--moss); }
+.stage-legend-item[data-stage="flowering"] .stage-icon { color: var(--forest); }
+.stage-legend-item[data-stage="tree"] .stage-icon { color: var(--teal); }
+.stage-legend-item .experiment-stage {
+  margin-bottom: 0.2rem;
+  flex-shrink: 0;
+}
+.stage-legend-desc {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 0.72rem;
+  color: var(--ink-mid);
+  line-height: 1.5;
+  display: block;
+  margin-top: 0.2rem;
+}
+
 @media (max-width: 640px) {
   .map-hero { padding: 6rem 0 3rem; }
   .ecosystem canvas { height: 350px; }
+  .stage-legend { grid-template-columns: 1fr 1fr; }
 }
   </style>
   <script>(function(){var t=localStorage.getItem('rc-theme')||'dark';document.documentElement.setAttribute('data-theme',t)})()</script>
@@ -358,6 +423,7 @@
     <a href="learn.html" class="page-nav-dot" data-label="Learn"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></a>
     <a href="declaration.html" class="page-nav-dot" data-label="Plant"><svg viewBox="0 0 24 24"><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 10-10v3a7 7 0 0 1-7 7z"/><path d="M19 12h3a10 10 0 0 1-10-10v3a7 7 0 0 0 7 7z"/></svg></a>
     <a href="map.html" class="page-nav-dot active" data-label="Map"><svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></a>
+    <a href="join.html" class="page-nav-dot" data-label="Join"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg></a>
   </nav>
 
   <canvas id="mycelium-canvas"></canvas>
@@ -368,7 +434,7 @@
     <!-- ═══ 1. ARRIVAL + MEMBERSHIP CTA ═══ -->
     <section class="map-hero">
       <span class="mono" style="display:block;margin-bottom:1.4rem;letter-spacing:0.22em;">The Regen Commons &mdash; Map</span>
-      <h1 class="map-hero-title">The Commons</h1>
+      <h1 class="map-hero-title">Explore the Commons</h1>
       <p class="map-hero-body">This is the Regen Commons — a living map of the people, knowledge, and experiments that the regenerative movement holds in common.</p>
       <div class="map-hero-cta">
         <a href="join.html" class="btn btn--large btn--primary"><span class="btn-label">Become a member</span> &rarr;</a>
@@ -391,19 +457,41 @@
       </div>
     </section>
 
-    <!-- ═══ 3. SHARED KNOWLEDGE ═══ -->
-    <section class="shared-knowledge" id="shared-knowledge">
-      <h2>Shared Knowledge</h2>
-      <p>76,000+ documents. Governance frameworks, coordination patterns, research, practice guides.</p>
-      <div class="kc-query">
-        <input type="text" class="kc-query-input" id="kc-query-input" placeholder="Ask the commons something..." aria-label="Query the knowledge commons" />
-        <button class="btn kc-query-btn" id="kc-query-btn"><span class="btn-label">Ask</span></button>
-      </div>
-    </section>
-
-    <!-- ═══ 4. COMMONS ASSETS ═══ -->
+    <!-- ═══ 3. COMMONS ASSETS ═══ -->
     <section class="commons-assets" id="commons-assets">
       <h2>What's in the Commons</h2>
+
+      <!-- Stage definitions -->
+      <div class="stage-legend">
+        <div class="stage-legend-item" data-stage="seed">
+          <svg class="stage-icon" viewBox="0 0 24 24"><circle cx="12" cy="14" r="5" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 9V3M9 5l3-2 3 2" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+          <div>
+            <span class="experiment-stage">Seed</span>
+            <span class="stage-legend-desc">Proposed or early-stage. Not yet tested in&nbsp;practice.</span>
+          </div>
+        </div>
+        <div class="stage-legend-item" data-stage="sprout">
+          <svg class="stage-icon" viewBox="0 0 24 24"><path d="M12 22V12" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M7 14c0-3 5-6 5-6s5 3 5 6" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M9 8c0-2.5 3-5 3-5s3 2.5 3 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+          <div>
+            <span class="experiment-stage">Sprout</span>
+            <span class="stage-legend-desc">In development. Being shaped, tested, or&nbsp;integrated.</span>
+          </div>
+        </div>
+        <div class="stage-legend-item" data-stage="flowering">
+          <svg class="stage-icon" viewBox="0 0 24 24"><circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1" fill="none" opacity="0.6"/><circle cx="16" cy="8" r="2" stroke="currentColor" stroke-width="1" fill="none" opacity="0.6"/><circle cx="9" cy="12" r="2" stroke="currentColor" stroke-width="1" fill="none" opacity="0.6"/><circle cx="15" cy="12" r="2" stroke="currentColor" stroke-width="1" fill="none" opacity="0.6"/><path d="M12 13V22" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+          <div>
+            <span class="experiment-stage">Flowering</span>
+            <span class="stage-legend-desc">Active and available. In use within the&nbsp;commons.</span>
+          </div>
+        </div>
+        <div class="stage-legend-item" data-stage="tree">
+          <svg class="stage-icon" viewBox="0 0 24 24"><path d="M12 22V10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M12 10C12 10 6 8 6 4c0-2 2.5-3 6-3s6 1 6 3c0 4-6 6-6 6z" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 18c-2 0-3-1-3-2" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.5"/><path d="M16 18c2 0 3-1 3-2" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.5"/></svg>
+          <div>
+            <span class="experiment-stage">Tree</span>
+            <span class="stage-legend-desc">Mature and established. Deep roots in the&nbsp;commons.</span>
+          </div>
+        </div>
+      </div>
 
       <!-- Filters (inline, above grid) -->
       <div class="map-filters-inline">
@@ -416,6 +504,7 @@
         <button class="filter-btn" data-filter="seed">Seed</button>
         <button class="filter-btn" data-filter="sprout">Sprout</button>
         <button class="filter-btn" data-filter="flowering">Flowering</button>
+        <button class="filter-btn" data-filter="tree">Tree</button>
       </div>
 
       <div class="commons-grid" id="commons-grid">
