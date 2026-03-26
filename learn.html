@@ -289,7 +289,12 @@
       display: block;
     }
 
-    /* ── CHOICE POINT (Panel 5) ──────────────────────────────────────────── */
+    /* ── CHOICE POINT (Panel 5) — visually distinct threshold ──────────── */
+
+    .panel--threshold .panel-inner {
+      border-color: rgba(var(--copper-rgb), 0.15);
+      background: var(--paper);
+    }
 
     .choice-point {
       text-align: center;
@@ -322,26 +327,7 @@
       margin-bottom: 2.8rem;
     }
 
-    .btn-plant {
-      display: inline-block;
-      font-family: 'Space Grotesk', var(--font-mono);
-      font-size: 0.68rem;
-      font-weight: 500;
-      letter-spacing: 0.20em;
-      text-transform: uppercase;
-      padding: 1.1rem 2.8rem;
-      border: 1.5px solid var(--forest);
-      background: none;
-      color: var(--forest);
-      text-decoration: none;
-      cursor: pointer;
-      transition: background 0.35s, color 0.35s, box-shadow 0.35s;
-    }
-    .btn-plant:hover {
-      background: var(--forest);
-      color: var(--paper);
-      box-shadow: 0 0 24px rgba(var(--forest-rgb), 0.2);
-    }
+    /* btn-plant uses the global .btn styles from style.css */
 
     /* ── PANEL ENTRANCE ANIMATION ────────────────────────────────────────── */
 
@@ -376,6 +362,12 @@
     <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
     <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
+
+  <nav class="page-nav" aria-label="Site navigation">
+    <a href="learn.html" class="page-nav-dot active" data-label="Learn"></a>
+    <a href="declaration.html" class="page-nav-dot" data-label="Plant"></a>
+    <a href="map.html" class="page-nav-dot" data-label="Map"></a>
+  </nav>
 
   <canvas id="mycelium-canvas"></canvas>
 
@@ -456,12 +448,12 @@
       </section>
 
       <!-- Panel 5: CHOICE POINT -->
-      <section class="panel" id="panel-4">
-        <div class="choice-point">
+      <section class="panel panel--threshold" id="panel-4">
+        <div class="panel-inner choice-point">
           <h2>There's a map here.</h2>
           <p class="subtext">We ask everyone who enters to plant something first.</p>
           <p class="seed-text">A vision. A sentence. A seed.</p>
-          <a href="declaration.html" class="btn-plant">Plant yours &rarr;</a>
+          <a href="declaration.html" class="btn btn--large"><span class="btn-label">Plant yours</span> &rarr;</a>
         </div>
       </section>
 

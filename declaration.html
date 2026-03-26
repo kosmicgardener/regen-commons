@@ -22,6 +22,12 @@
     <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 
+  <nav class="page-nav" aria-label="Site navigation">
+    <a href="learn.html" class="page-nav-dot" data-label="Learn"></a>
+    <a href="declaration.html" class="page-nav-dot active" data-label="Plant"></a>
+    <a href="map.html" class="page-nav-dot" data-label="Map"></a>
+  </nav>
+
   <!-- Mycelium background (z-index: 0 from CSS) -->
   <canvas id="mycelium-canvas"></canvas>
   <!-- Seed field canvas sits above mycelium -->
@@ -29,12 +35,13 @@
 
   <!-- STATE 1: The form, shown until submission -->
   <div class="declaration-ui" id="declaration-form-ui">
-    <div class="declaration-inner">
+    <div class="declaration-inner declaration-card">
       <span class="declaration-eyebrow">Offer your vision</span>
-      <p class="declaration-prompt">What futures emerge from commoning?<br/>Add your vision to shape what becomes possible in our shared commons.</p>
+      <p class="declaration-prompt">What futures emerge from commoning?</p>
       <p class="declaration-sub">
-        A sentence, a hope, a seed. It doesn't have to be polished.<br/>
-        What you plant here joins what others have planted. Together, these visions become the field.
+        Add your vision to shape what becomes possible in our shared commons.
+        A sentence, a hope, a seed. It doesn't have to be polished.
+        What you plant here joins what others have planted — together, these visions become the field.
       </p>
       <textarea
         id="vision-input"
@@ -43,10 +50,6 @@
         placeholder="Write here — a sentence is enough…"
         aria-label="Your vision for the commons"
       ></textarea>
-      <p class="declaration-note">
-        Your words join the collection.<br/>
-        Others who arrive will see what you've offered.
-      </p>
       <button class="btn" id="offer-btn"><span class="btn-label">Plant this seed</span> &rarr;</button>
     </div>
   </div>
