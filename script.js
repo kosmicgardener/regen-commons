@@ -116,6 +116,8 @@
     document.querySelectorAll(".btn").forEach(function (btn) {
       // Don't double-inject
       if (btn.querySelector(".btn-blob")) return;
+      // Skip blob on buttons inside declaration cards
+      if (btn.closest(".declaration-card")) return;
 
       // Wrap existing content in a label span
       var label = document.createElement("span");
@@ -214,14 +216,8 @@
       // Initialize the seed field via the canvas.js public API
       seedFieldHandle = window.initSeedField(canvas, SEEDED, userText);
 
-      // Update counter periodically to reflect sequentially-appearing nodes
+      // Counter disabled — removed per design feedback
       if (counterInterval) clearInterval(counterInterval);
-      counterInterval = setInterval(function () {
-        if (counter && window._seedFieldNodeCount) {
-          var count = window._seedFieldNodeCount();
-          counter.textContent = count + " visions, one network";
-        }
-      }, 200);
     }
 
     window.addEventListener("resize", function () {
@@ -289,6 +285,16 @@
 
     if (enterBtn) {
       enterBtn.addEventListener("click", function () { navigateTo("map.html"); });
+    }
+
+    // ── Auto-proceed when arriving from learn page (#planted) ──────────────
+    if (window.location.hash === "#planted") {
+      var preVision = null;
+      try { preVision = localStorage.getItem("regen_vision"); } catch (_) {}
+      if (preVision && input && offerBtn) {
+        input.value = preVision;
+        setTimeout(function () { offerBtn.click(); }, 350);
+      }
     }
   }
 
@@ -408,9 +414,14 @@
       });
     });
 
+    var stageFilters = ["seed", "sprout", "flowering"];
+
     function applyFilter() {
+      var isStageFilter = stageFilters.indexOf(activeType) !== -1;
       var visible = originalOrder.filter(function (c) {
-        return activeType === "all" || c.dataset.type === activeType;
+        if (activeType === "all") return true;
+        if (isStageFilter) return c.dataset.stage === activeType;
+        return c.dataset.type === activeType;
       });
 
       cards.forEach(function (c) {

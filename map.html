@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="style.css" />
   <style>
 .map-page {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 clamp(1.5rem, 4vw, 3rem);
 }
@@ -43,32 +43,16 @@
   margin-top: 0.8rem;
 }
 
-/* Membership banner — prominent, early */
-.membership-banner {
-  background: var(--parchment);
-  border: 1.5px solid rgba(var(--forest-rgb), 0.25);
-  padding: 2rem 2.5rem;
-  text-align: center;
-  margin: 2rem 0 4rem;
-}
-.membership-banner h3 {
-  font-family: 'Fraunces', Georgia, serif;
-  font-size: 1.2rem;
-  font-weight: 400;
-  color: var(--ink);
-  margin-bottom: 0.6rem;
-}
-.membership-banner p {
-  font-size: 0.88rem;
-  color: var(--ink-mid);
-  margin-bottom: 1.2rem;
+/* Stage label inline with card type */
+.card-header-text .experiment-stage {
+  margin-left: 0.5rem;
+  vertical-align: middle;
 }
 
 /* Section spacing */
 .ecosystem,
 .shared-knowledge,
 .commons-assets,
-.whats-happening,
 .join-cta {
   padding: 3rem 0;
   border-top: 1px solid rgba(var(--copper-rgb), 0.08);
@@ -76,8 +60,7 @@
 
 .ecosystem h2,
 .shared-knowledge h2,
-.commons-assets h2,
-.whats-happening h2 {
+.commons-assets h2 {
   font-family: 'Fraunces', Georgia, serif;
   font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 300;
@@ -186,13 +169,14 @@
 .commons-card:hover { border-color: rgba(var(--copper-rgb), 0.3); }
 .card-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 1rem;
   padding: 1rem 1.2rem;
   cursor: pointer;
 }
-.card-icon { width: 40px; height: 40px; flex-shrink: 0; }
+.card-icon { width: 40px; height: 40px; flex-shrink: 0; margin-top: 0.2rem; }
 .card-header-text { flex: 1; min-width: 0; }
+.card-header-text > * + * { margin-top: 0.15rem; }
 .card-type {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 0.5rem;
@@ -306,9 +290,12 @@
   margin-bottom: 0.6rem;
   border: 1px solid;
 }
-.experiment-card[data-stage="seed"] .experiment-stage { color: var(--gold); border-color: rgba(var(--gold-rgb), 0.3); }
-.experiment-card[data-stage="sprout"] .experiment-stage { color: var(--moss); border-color: rgba(var(--forest-rgb), 0.3); }
-.experiment-card[data-stage="flowering"] .experiment-stage { color: var(--forest); border-color: rgba(var(--forest-rgb), 0.4); }
+.experiment-card[data-stage="seed"] .experiment-stage,
+.commons-card[data-stage="seed"] .experiment-stage { color: var(--gold); border-color: rgba(var(--gold-rgb), 0.3); }
+.experiment-card[data-stage="sprout"] .experiment-stage,
+.commons-card[data-stage="sprout"] .experiment-stage { color: var(--moss); border-color: rgba(var(--forest-rgb), 0.3); }
+.experiment-card[data-stage="flowering"] .experiment-stage,
+.commons-card[data-stage="flowering"] .experiment-stage { color: var(--forest); border-color: rgba(var(--forest-rgb), 0.4); }
 .experiment-tenders {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 0.48rem;
@@ -368,9 +355,9 @@
   </button>
 
   <nav class="page-nav" aria-label="Site navigation">
-    <a href="learn.html" class="page-nav-dot" data-label="Learn"></a>
-    <a href="declaration.html" class="page-nav-dot" data-label="Plant"></a>
-    <a href="map.html" class="page-nav-dot active" data-label="Map"></a>
+    <a href="learn.html" class="page-nav-dot" data-label="Learn"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></a>
+    <a href="declaration.html" class="page-nav-dot" data-label="Plant"><svg viewBox="0 0 24 24"><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 10-10v3a7 7 0 0 1-7 7z"/><path d="M19 12h3a10 10 0 0 1-10-10v3a7 7 0 0 0 7 7z"/></svg></a>
+    <a href="map.html" class="page-nav-dot active" data-label="Map"><svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></a>
   </nav>
 
   <canvas id="mycelium-canvas"></canvas>
@@ -380,20 +367,14 @@
 
     <!-- ═══ 1. ARRIVAL + MEMBERSHIP CTA ═══ -->
     <section class="map-hero">
-      <h1 class="map-hero-title">You're inside.</h1>
+      <span class="mono" style="display:block;margin-bottom:1.4rem;letter-spacing:0.22em;">The Regen Commons &mdash; Map</span>
+      <h1 class="map-hero-title">The Commons</h1>
       <p class="map-hero-body">This is the Regen Commons — a living map of the people, knowledge, and experiments that the regenerative movement holds in common.</p>
       <div class="map-hero-cta">
         <a href="join.html" class="btn btn--large btn--primary"><span class="btn-label">Become a member</span> &rarr;</a>
         <p class="map-hero-cta-sub">Members can query the full knowledge base, join experiments, and shape what gets built.</p>
       </div>
     </section>
-
-    <!-- Membership banner -->
-    <div class="membership-banner">
-      <h3>Join the commons</h3>
-      <p>Members can query 76,000+ documents, join active experiments, and help shape what gets built.</p>
-      <a href="join.html" class="btn btn--primary"><span class="btn-label">Become a member</span> &rarr;</a>
-    </div>
 
     <!-- ═══ 2. ECOSYSTEM MAP ═══ -->
     <section class="ecosystem" id="ecosystem">
@@ -432,13 +413,16 @@
         <button class="filter-btn" data-filter="brand">Brand &amp; IP</button>
         <button class="filter-btn" data-filter="governance">Governance &amp; Legal</button>
         <button class="filter-btn" data-filter="coordination">Coordination</button>
+        <button class="filter-btn" data-filter="seed">Seed</button>
+        <button class="filter-btn" data-filter="sprout">Sprout</button>
+        <button class="filter-btn" data-filter="flowering">Flowering</button>
       </div>
 
       <div class="commons-grid" id="commons-grid">
 
         <!-- ═══ KNOWLEDGE ASSETS ═══ -->
 
-        <article class="commons-card" data-type="knowledge">
+        <article class="commons-card" data-type="knowledge" data-stage="flowering">
           <div class="card-header">
             <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <circle cx="30" cy="30" r="4" stroke="#1A7860" stroke-width="1" fill="rgba(26,120,96,0.12)"/>
@@ -455,7 +439,7 @@
               <circle cx="52" cy="20" r="2" fill="#1A7860" opacity="0.5"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Knowledge</span>
+              <span class="card-type">Knowledge</span><span class="experiment-stage">Flowering</span>
               <h3 class="card-name">Indexed Knowledge Base</h3>
               <span class="card-teaser">76,000+ documents across 20+ source types — research, transcripts, governance frameworks, field guides</span>
               <span class="card-contributor">Contributed by Regen Network</span>
@@ -473,7 +457,7 @@
           </div>
         </article>
 
-        <article class="commons-card" data-type="knowledge">
+        <article class="commons-card" data-type="knowledge" data-stage="sprout">
           <div class="card-header">
             <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <circle cx="30" cy="20" r="12" stroke="#1A7860" stroke-width="0.8" fill="rgba(26,120,96,0.08)"/>
@@ -482,7 +466,7 @@
               <circle cx="30" cy="20" r="2.5" fill="#1A7860" opacity="0.5"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Knowledge</span>
+              <span class="card-type">Knowledge</span><span class="experiment-stage">Sprout</span>
               <h3 class="card-name">Podcast Transcripts &amp; Knowledge Graph</h3>
               <span class="card-teaser">ReFi Podcast archive — indexed transcripts, structured datasets, and curated knowledge graphs</span>
               <span class="card-contributor">Contributed by ReFi DAO</span>
@@ -500,7 +484,7 @@
           </div>
         </article>
 
-        <article class="commons-card" data-type="knowledge">
+        <article class="commons-card" data-type="knowledge" data-stage="seed">
           <div class="card-header">
             <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <path d="M10 50 Q20 30 30 20 Q40 10 50 14" stroke="#1A7860" stroke-width="1.2" fill="none" stroke-linecap="round"/>
@@ -510,7 +494,7 @@
               <circle cx="10" cy="50" r="2.5" fill="#1A7860" opacity="0.4"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Knowledge</span>
+              <span class="card-type">Knowledge</span><span class="experiment-stage">Seed</span>
               <h3 class="card-name">Educational Materials &amp; Community Knowledge</h3>
               <span class="card-teaser">Course content, learning guides, and community coordination knowledge</span>
               <span class="card-contributor">Contributed by Greenpill Network</span>
@@ -528,7 +512,7 @@
           </div>
         </article>
 
-        <article class="commons-card" data-type="knowledge">
+        <article class="commons-card" data-type="knowledge" data-stage="seed">
           <div class="card-header">
             <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <rect x="12" y="12" width="36" height="36" rx="2" stroke="#1A7860" stroke-width="0.8" fill="rgba(26,120,96,0.06)"/>
@@ -537,7 +521,7 @@
               <line x1="30" y1="12" x2="30" y2="48" stroke="#1A7860" stroke-width="0.5" opacity="0.4"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Knowledge</span>
+              <span class="card-type">Knowledge</span><span class="experiment-stage">Seed</span>
               <h3 class="card-name">Governance Frameworks &amp; Institutional Design</h3>
               <span class="card-teaser">Reusable governance templates, civic coordination patterns, and institutional design documents</span>
               <span class="card-contributor">Contributed by OpenCivics</span>
@@ -557,7 +541,7 @@
 
         <!-- ═══ INFRASTRUCTURE ASSETS ═══ -->
 
-        <article class="commons-card" data-type="infrastructure">
+        <article class="commons-card" data-type="infrastructure" data-stage="sprout">
           <div class="card-header">
             <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <rect x="18" y="18" width="24" height="24" rx="2" stroke="#2A6888" stroke-width="1" fill="rgba(42,104,136,0.10)"/>
@@ -572,7 +556,7 @@
               <circle cx="30" cy="30" r="4" fill="rgba(42,104,136,0.25)" stroke="#2A6888" stroke-width="0.6"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Infrastructure</span>
+              <span class="card-type">Infrastructure</span><span class="experiment-stage">Sprout</span>
               <h3 class="card-name">KOI — Knowledge Organisation Infrastructure</h3>
               <span class="card-teaser">Open-source interoperability protocol for federated knowledge commons</span>
               <span class="card-contributor">Maintained by BlockScience / Metagov / RMIT</span>
@@ -590,7 +574,7 @@
           </div>
         </article>
 
-        <article class="commons-card" data-type="infrastructure">
+        <article class="commons-card" data-type="infrastructure" data-stage="sprout">
           <div class="card-header">
             <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <circle cx="30" cy="30" r="3.5" fill="#2A6888" opacity="0.5"/>
@@ -604,7 +588,7 @@
               <path d="M30 30 Q42 36 50 44" stroke="#2A6888" stroke-width="0.7" fill="none"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Infrastructure</span>
+              <span class="card-type">Infrastructure</span><span class="experiment-stage">Sprout</span>
               <h3 class="card-name">AI Agents &amp; Querying Tooling</h3>
               <span class="card-teaser">Organizational agents for cross-org knowledge synthesis, search, and collaboration</span>
               <span class="card-contributor">Built by Darren &amp; Sean (GaiaAI) · Maintained by Regen Network</span>
@@ -624,7 +608,7 @@
 
         <!-- ═══ BRAND & IP ASSETS ═══ -->
 
-        <article class="commons-card" data-type="brand">
+        <article class="commons-card" data-type="brand" data-stage="flowering">
           <div class="card-header">
             <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <path d="M20 8 Q35 18 20 30 Q5 42 20 52" stroke="#944818" stroke-width="1.4" fill="none" stroke-linecap="round"/>
@@ -635,7 +619,7 @@
               <line x1="20" y1="45" x2="40" y2="45" stroke="#944818" stroke-width="0.6" opacity="0.5"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Brand &amp; IP</span>
+              <span class="card-type">Brand &amp; IP</span><span class="experiment-stage">Flowering</span>
               <h3 class="card-name">Regen Trademark</h3>
               <span class="card-teaser">USPTO #90790939 — the "Regen" mark and member certification, held in trust as a commons asset</span>
               <span class="card-contributor">Filed by Regen Network · Administered by Steward Council</span>
@@ -653,7 +637,7 @@
           </div>
         </article>
 
-        <article class="commons-card" data-type="brand">
+        <article class="commons-card" data-type="brand" data-stage="sprout">
           <div class="card-header">
             <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <polygon points="30,6 50,22 44,46 16,46 10,22" stroke="#944818" stroke-width="0.9" fill="rgba(148,72,24,0.08)"/>
@@ -661,7 +645,7 @@
               <circle cx="30" cy="30" r="5" stroke="#944818" stroke-width="0.7" fill="rgba(148,72,24,0.2)"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Brand &amp; IP</span>
+              <span class="card-type">Brand &amp; IP</span><span class="experiment-stage">Sprout</span>
               <h3 class="card-name">Brand Identity System</h3>
               <span class="card-teaser">Visual identity, tone of voice, typography, color palette, co-branding templates, and messaging framework</span>
               <span class="card-contributor">Designed by Patricia Parkinson · Commissioned by Steward Council</span>
@@ -681,7 +665,7 @@
 
         <!-- ═══ GOVERNANCE & LEGAL ASSETS ═══ -->
 
-        <article class="commons-card" data-type="governance">
+        <article class="commons-card" data-type="governance" data-stage="flowering">
           <div class="card-header">
             <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <circle cx="30" cy="30" r="26" stroke="#A87010" stroke-width="0.6" fill="none" opacity="0.4"/>
@@ -693,7 +677,7 @@
               <line x1="4"  y1="30" x2="56" y2="30" stroke="#A87010" stroke-width="0.3" opacity="0.2"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Governance &amp; Legal</span>
+              <span class="card-type">Governance &amp; Legal</span><span class="experiment-stage">Flowering</span>
               <h3 class="card-name">The Constitution Stack</h3>
               <span class="card-teaser">Identity, principles, membrane model, roles, mandates — layered like tree rings</span>
               <span class="card-contributor">Authored by Steward Council · Led by Gregory Landua &amp; Monty Bryant</span>
@@ -711,7 +695,7 @@
           </div>
         </article>
 
-        <article class="commons-card" data-type="governance">
+        <article class="commons-card" data-type="governance" data-stage="flowering">
           <div class="card-header">
             <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <ellipse cx="30" cy="30" rx="22" ry="26" stroke="#A87010" stroke-width="0.8" fill="rgba(168,112,16,0.06)"/>
@@ -721,7 +705,7 @@
               <line x1="30" y1="20" x2="30" y2="40" stroke="#A87010" stroke-width="0.4" opacity="0.4"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Governance &amp; Legal</span>
+              <span class="card-type">Governance &amp; Legal</span><span class="experiment-stage">Flowering</span>
               <h3 class="card-name">Commons Knowledge License</h3>
               <span class="card-teaser">CopyFair-based — use freely within the commons, reciprocal sharing, protection against extraction</span>
               <span class="card-contributor">Drafted by Steven &amp; Mill Law Center · Reviewed by Steward Council</span>
@@ -739,7 +723,7 @@
           </div>
         </article>
 
-        <article class="commons-card" data-type="governance">
+        <article class="commons-card" data-type="governance" data-stage="seed">
           <div class="card-header">
             <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <circle cx="24" cy="30" r="16" stroke="#A87010" stroke-width="0.9" fill="rgba(168,112,16,0.07)"/>
@@ -747,7 +731,7 @@
               <path d="M30 15.4 Q38 22 38 30 Q38 38 30 44.6 Q22 38 22 30 Q22 22 30 15.4Z" fill="rgba(168,112,16,0.15)" stroke="none"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Governance &amp; Legal</span>
+              <span class="card-type">Governance &amp; Legal</span><span class="experiment-stage">Seed</span>
               <h3 class="card-name">Membership Agreement</h3>
               <span class="card-teaser">The document that crosses an organization from observer to participant — commits to mission, reciprocity, license</span>
               <span class="card-contributor">Drafted by Steward Council · Legal review by Mill Law Center</span>
@@ -765,14 +749,14 @@
           </div>
         </article>
 
-        <article class="commons-card" data-type="governance">
+        <article class="commons-card" data-type="governance" data-stage="seed">
           <div class="card-header">
             <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <path d="M30 30 Q30 22 38 18 Q46 14 50 22 Q54 30 48 38 Q42 46 30 46 Q18 46 12 36 Q6 26 12 16 Q18 6 32 8" stroke="#A87010" stroke-width="1.2" fill="none" stroke-linecap="round"/>
               <circle cx="30" cy="30" r="3" fill="#A87010" opacity="0.5"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Governance &amp; Legal</span>
+              <span class="card-type">Governance &amp; Legal</span><span class="experiment-stage">Seed</span>
               <h3 class="card-name">Steward Transition Protocol</h3>
               <span class="card-teaser">1-year renewable terms, graceful exit pathway, treasury handover — the system survives its founders</span>
               <span class="card-contributor">Designed by Steward Council</span>
@@ -792,7 +776,7 @@
 
         <!-- ═══ COORDINATION ASSETS ═══ -->
 
-        <article class="commons-card" data-type="coordination">
+        <article class="commons-card" data-type="coordination" data-stage="seed">
           <div class="card-header">
             <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <path d="M30 54 Q30 40 30 8" stroke="#1E3A10" stroke-width="1.2" fill="none" stroke-linecap="round"/>
@@ -804,7 +788,7 @@
               <path d="M30 44 Q40 40 46 44" stroke="#1E3A10" stroke-width="0.5" fill="none" stroke-linecap="round" opacity="0.6"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Coordination</span>
+              <span class="card-type">Coordination</span><span class="experiment-stage">Seed</span>
               <h3 class="card-name">Steward Questionnaire Methodology</h3>
               <span class="card-teaser">A replicable process for distributed stakeholder alignment — gathering what a community actually needs</span>
               <span class="card-contributor">Developed by Patricia Parkinson &amp; Monty Bryant</span>
@@ -822,7 +806,7 @@
           </div>
         </article>
 
-        <article class="commons-card" data-type="coordination">
+        <article class="commons-card" data-type="coordination" data-stage="sprout">
           <div class="card-header">
             <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <ellipse cx="22" cy="22" rx="14" ry="10" stroke="#1E3A10" stroke-width="0.7" fill="rgba(30,58,16,0.07)"/>
@@ -832,7 +816,7 @@
               <circle cx="30" cy="30" r="4" fill="rgba(30,58,16,0.25)" stroke="#1E3A10" stroke-width="0.6"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Coordination</span>
+              <span class="card-type">Coordination</span><span class="experiment-stage">Sprout</span>
               <h3 class="card-name">Coordination Patterns &amp; Meeting Rhythms</h3>
               <span class="card-teaser">Decision formats, facilitation tools, sense-making practices — tested forms that hold groups through hard conversations</span>
               <span class="card-contributor">Contributed by OpenCivics &amp; Steward Council</span>
@@ -850,7 +834,7 @@
           </div>
         </article>
 
-        <article class="commons-card" data-type="coordination">
+        <article class="commons-card" data-type="coordination" data-stage="seed">
           <div class="card-header">
             <svg class="card-icon" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <path d="M8 52 Q12 40 20 34 Q30 26 44 20 Q52 16 54 10" stroke="#1E3A10" stroke-width="1.4" fill="none" stroke-linecap="round"/>
@@ -864,7 +848,7 @@
               <line x1="52" y1="12" x2="52" y2="18" stroke="#1E3A10" stroke-width="0.5" opacity="0.4"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Coordination</span>
+              <span class="card-type">Coordination</span><span class="experiment-stage">Seed</span>
               <h3 class="card-name">Funding Model &amp; Sustainability Arc</h3>
               <span class="card-teaser">Grant funding → reciprocal contribution → conditional licensing → revenue sharing</span>
               <span class="card-contributor">Designed by Monty Bryant &amp; Gregory Landua</span>
@@ -885,37 +869,7 @@
       </div><!-- /commons-grid -->
     </section>
 
-    <!-- ═══ 5. WHAT'S HAPPENING ═══ -->
-    <section class="whats-happening" id="whats-happening">
-      <h2>What's Happening</h2>
-      <p>Bounded experiments in commoning. Each tests an idea the community holds together.</p>
-      <div class="experiment-card" data-stage="flowering">
-        <span class="experiment-stage">Flowering</span>
-        <h4>Federated Knowledge Commons</h4>
-        <p>What happens when organizations cross-query each other's knowledge gardens?</p>
-        <span class="experiment-tenders">GaiaAI, Regen Network, Patricia Parkinson</span>
-      </div>
-      <div class="experiment-card" data-stage="sprout">
-        <span class="experiment-stage">Sprouting</span>
-        <h4>CopyFair Licensing Pilot</h4>
-        <p>Testing commons-based licensing that protects shared knowledge while enabling use.</p>
-        <span class="experiment-tenders">OpenCivics, Mill Law Center</span>
-      </div>
-      <div class="experiment-card" data-stage="seed">
-        <span class="experiment-stage">Seed</span>
-        <h4>Steward Transition</h4>
-        <p>How do you rotate stewardship without losing institutional memory?</p>
-        <span class="experiment-tenders">Regen Commons Stewards</span>
-      </div>
-      <div class="experiment-card" data-stage="flowering">
-        <span class="experiment-stage">Flowering</span>
-        <h4>Regen Identity &amp; Presence</h4>
-        <p>What does it feel like to encounter, enter, and deepen into a commons?</p>
-        <span class="experiment-tenders">Patricia Parkinson, Roxanna Shohadaee</span>
-      </div>
-    </section>
-
-    <!-- ═══ 6. BECOME A MEMBER ═══ -->
+    <!-- ═══ 5. BECOME A MEMBER ═══ -->
     <section class="join-cta">
       <h2>The further you walk in, the more opens up.</h2>
       <p>Members can query the full knowledge base, join experiments, and shape what gets built.</p>
