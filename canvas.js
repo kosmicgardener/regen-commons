@@ -508,16 +508,16 @@
     function drawSeedNode(node) {
       if (node.glowAlpha < 0.01) return;
 
-      var pulse = node.isUser ? 1 + 0.15 * Math.sin(sfFrame * 0.04) : 1;
+      var pulse = node.isUser ? 1 + 0.32 * Math.sin(sfFrame * 0.05) : 1;
       var r = node.r * pulse;
       var col = node.color;
 
       sfCtx.save();
 
       // Outer glow halo
-      var glowR = r * (node.hovered ? 5 : 3.5);
+      var glowR = r * (node.hovered ? 5 : (node.isUser ? 5 : 3.5));
       var grd = sfCtx.createRadialGradient(node.x, node.y, 0, node.x, node.y, glowR);
-      var glowStrength = node.hovered ? 0.30 : 0.15;
+      var glowStrength = node.hovered ? 0.30 : (node.isUser ? 0.28 : 0.15);
       grd.addColorStop(0,   rgba(col, node.glowAlpha * glowStrength));
       grd.addColorStop(0.5, rgba(col, node.glowAlpha * glowStrength * 0.35));
       grd.addColorStop(1,   rgba(col, 0));
@@ -525,6 +525,18 @@
       sfCtx.arc(node.x, node.y, glowR, 0, Math.PI * 2);
       sfCtx.fillStyle = grd;
       sfCtx.fill();
+
+      // Expanding ring — only on the user's seed, to draw the eye
+      if (node.isUser) {
+        var ringPhase = (sfFrame % 120) / 120;
+        var ringR = r * (1.4 + ringPhase * 3.8);
+        var ringAlpha = node.glowAlpha * (1 - ringPhase) * 0.55;
+        sfCtx.beginPath();
+        sfCtx.arc(node.x, node.y, ringR, 0, Math.PI * 2);
+        sfCtx.strokeStyle = rgba(col, ringAlpha);
+        sfCtx.lineWidth = 1.2;
+        sfCtx.stroke();
+      }
 
       // Core pad (larger than normal junctions)
       sfCtx.beginPath();

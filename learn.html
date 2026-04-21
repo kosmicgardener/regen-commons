@@ -50,17 +50,19 @@
     }
 
     .panel-inner {
-      max-width: 620px;
+      max-width: 680px;
       width: 100%;
-      min-height: 440px;
+      min-height: 680px;
+      height: 680px;
       text-align: center;
       background: var(--paper);
       border: 1px solid rgba(var(--copper-rgb), 0.15);
-      padding: clamp(2rem, 4vw, 3.5rem);
+      padding: clamp(2.5rem, 4.5vw, 4rem);
       position: relative;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      overflow: hidden;
     }
 
     /* ── PROGRESS DOTS ───────────────────────────────────────────────────── */
@@ -121,8 +123,12 @@
       opacity: 0;
       pointer-events: none;
     }
-    .nav-arrow-left  { left: 1.5rem; }
-    .nav-arrow-right { right: 1.5rem; }
+    .nav-arrow-left  { left: calc(50% - 380px); }
+    .nav-arrow-right { right: calc(50% - 380px); }
+    @media (max-width: 900px) {
+      .nav-arrow-left  { left: 1.5rem; }
+      .nav-arrow-right { right: 1.5rem; }
+    }
 
     /* ── EYEBROW / TYPOGRAPHY ────────────────────────────────────────────── */
 
@@ -222,7 +228,7 @@
     /* ── SEED DOTS (replace glimpse cards) ───────────────────────────────── */
 
     .panel-inner--glimpse {
-      min-height: 340px;
+      /* same size as other panels — see .panel-inner */
     }
 
     .seed-dots {
@@ -261,50 +267,22 @@
       bottom: 0;
       left: 50%;
       transform: translateX(-50%);
-      background: var(--vellum);
-      border: 1px solid rgba(var(--copper-rgb), 0.25);
-      padding: 1.2rem 1.4rem;
-      max-width: 320px;
+      background: var(--paper);
+      border: 1px solid rgba(var(--copper-rgb), 0.28);
+      padding: 1rem 1.2rem;
+      max-width: 260px;
       width: 90%;
       text-align: left;
       z-index: 10;
       pointer-events: none;
     }
-    .seed-tooltip-title {
-      font-family: 'Fraunces', var(--font-serif);
+    .seed-tooltip-vision {
+      font-family: 'Lora', 'Source Serif 4', var(--font-serif);
+      font-style: italic;
       font-size: 0.95rem;
-      font-weight: 500;
+      font-weight: 400;
       color: var(--ink);
-      display: block;
-      margin-bottom: 0.3rem;
-    }
-    .seed-tooltip-desc {
-      font-family: 'Source Serif 4', var(--font-serif);
-      font-size: 0.8rem;
-      color: var(--ink-mid);
-      line-height: 1.6;
-      display: block;
-      margin-bottom: 0.3rem;
-    }
-    .seed-tooltip-stage {
-      font-family: 'Space Grotesk', var(--font-mono);
-      font-size: 0.48rem;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--forest);
-      display: block;
-      margin-bottom: 0.3rem;
-      padding: 0.1rem 0.4rem;
-      border: 1px solid rgba(var(--forest-rgb), 0.3);
-      width: fit-content;
-    }
-    .seed-tooltip-by {
-      font-family: 'Space Grotesk', var(--font-mono);
-      font-size: 0.5rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--ink-dim);
+      line-height: 1.5;
       display: block;
     }
 
@@ -313,6 +291,30 @@
     .panel--threshold .panel-inner {
       border-color: rgba(var(--copper-rgb), 0.15);
       background: var(--paper);
+    }
+    /* Last panel mirrors declaration.html's dark card styling */
+    .panel--threshold .panel-inner.declaration-card {
+      background: var(--ink);
+      color: var(--paper);
+    }
+    [data-theme="light"] .panel--threshold .panel-inner.declaration-card {
+      background: #1A1408;
+      color: #EDE5D4;
+    }
+    /* Offering panel (#plant) — heading-sized prompt, smaller sub copy */
+    .panel--threshold .declaration-prompt {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 1.6rem;
+    }
+    .panel--threshold .declaration-sub {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 0.78rem;
+      letter-spacing: 0;
+      line-height: 1.65;
+      margin-bottom: 2rem;
     }
 
     .choice-point {
@@ -395,7 +397,7 @@
 
   <nav class="page-nav" aria-label="Site navigation">
     <a href="learn.html" class="page-nav-dot active" data-label="Learn"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></a>
-    <a href="declaration.html" class="page-nav-dot" data-label="Plant"><svg viewBox="0 0 24 24"><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 10-10v3a7 7 0 0 1-7 7z"/><path d="M19 12h3a10 10 0 0 1-10-10v3a7 7 0 0 0 7 7z"/></svg></a>
+    <a href="learn.html#plant" class="page-nav-dot" data-label="Plant"><svg viewBox="0 0 24 24"><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 10-10v3a7 7 0 0 1-7 7z"/><path d="M19 12h3a10 10 0 0 1-10-10v3a7 7 0 0 0 7 7z"/></svg></a>
     <a href="map.html" class="page-nav-dot" data-label="Map"><svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></a>
     <a href="join.html" class="page-nav-dot" data-label="Join"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg></a>
   </nav>
@@ -410,6 +412,7 @@
     <span class="learn-dot" data-panel="3"></span>
     <span class="learn-dot" data-panel="4"></span>
     <span class="learn-dot" data-panel="5"></span>
+    <span class="learn-dot" data-panel="6"></span>
   </nav>
 
   <!-- Arrow navigation -->
@@ -427,7 +430,7 @@
           <h2>How much of your life is already a commons?</h2>
           <p>The air you breathe. The language you speak. The knowledge passed down by people you'll never meet. Commoning isn't something new. It's something&nbsp;to&nbsp;remember.</p>
           <div class="pivot">
-            <p>And yet — the knowledge the regenerative movement most needs stays scattered. Governance frameworks rebuilt from scratch. Coordination patterns lost when projects end. What would change if they were&nbsp;gathered?</p>
+            <p>And yet, the common sense of tending common ground is easy to forget. We build from scratch. The fruits of our efforts die on the vine. What we could offer each other — for mutual benefit — stays scattered, undiscovered. What could change if we commoned more&nbsp;often?</p>
           </div>
         </div>
       </section>
@@ -436,7 +439,7 @@
       <section class="panel" id="panel-1">
         <div class="panel-inner">
           <span class="eyebrow">Tending the commons</span>
-          <h2>Tending is a practice.</h2>
+          <h2>Commoning is a practice.</h2>
           <p>Commoning isn't joining an organization. It's choosing, daily, to share what you know, tend what you didn't plant, and hold things in trust rather&nbsp;than&nbsp;ownership.</p>
 
           <div class="practice-card">
@@ -447,36 +450,21 @@
         </div>
       </section>
 
-      <!-- Panel 3: ENCOURAGE -->
+      <!-- Panel 3: MOVEMENT -->
       <section class="panel" id="panel-2">
         <div class="panel-inner">
-          <span class="eyebrow">We each have a role</span>
-          <h2>The regenerative movement doesn't need another platform. It needs shared ground.</h2>
-          <p>Where your knowledge stands beside others'. Where experiments can fail safely. Where the invisible labor of coordination becomes visible. You don't have to carry everything&nbsp;alone.</p>
+          <span class="eyebrow">Finding our footing</span>
+          <h2>The regenerative movement is growing.</h2>
+          <p>For it to flourish, it needs tending — and we are just beginning to remember how to cultivate fertile soil together. What conditions will nourish our common&nbsp;ground?</p>
         </div>
       </section>
 
-      <!-- Panel 4: GLIMPSE -->
+      <!-- Panel 4: ENCOURAGE -->
       <section class="panel" id="panel-3">
-        <div class="panel-inner panel-inner--glimpse">
-          <span class="eyebrow">Already in the ground</span>
-          <h2>Explore what's been planted.</h2>
-          <p>Hover over the seeds to see what's growing.</p>
-          <div class="seed-dots" id="learn-seed-dots">
-            <div class="seed-dot" data-title="Indexed Knowledge Base" data-desc="76,000+ documents from across the regenerative movement, searchable and structured." data-by="Regen Network" data-stage="Flowering"></div>
-            <div class="seed-dot" data-title="Governance Frameworks" data-desc="Templates, decision protocols, and institutional design patterns tested in practice." data-by="OpenCivics" data-stage="Seed"></div>
-            <div class="seed-dot" data-title="Coordination Patterns" data-desc="Meeting rhythms, facilitation guides, and coordination tools for distributed teams." data-by="Regen Commons Stewards" data-stage="Seed"></div>
-            <div class="seed-dot" data-title="CopyFair License" data-desc="Open license for commons-held knowledge. Free use within the commons, derivatives shared back." data-by="OpenCivics" data-stage="Flowering"></div>
-            <div class="seed-dot" data-title="KOI Protocol" data-desc="Federated knowledge infrastructure. Cross-commons querying and shared indexing." data-by="GaiaAI" data-stage="Sprouting"></div>
-            <div class="seed-dot" data-title="Brand Identity System" data-desc="Visual language, tone, typography, and design patterns for the Regen Commons identity." data-by="Patricia Parkinson" data-stage="Sprouting"></div>
-            <div class="seed-dot" data-title="Steward Questionnaire" data-desc="Methodology for surfacing steward perspectives, tensions, and convergent themes." data-by="Regen Commons Stewards" data-stage="Seed"></div>
-          </div>
-          <div class="seed-tooltip" id="seed-tooltip" style="display:none;">
-            <span class="seed-tooltip-stage"></span>
-            <span class="seed-tooltip-title"></span>
-            <span class="seed-tooltip-desc"></span>
-            <span class="seed-tooltip-by"></span>
-          </div>
+        <div class="panel-inner">
+          <span class="eyebrow">We each have a role</span>
+          <h2>The regenerative movement needs shared ground.</h2>
+          <p>A place where your knowledge stands alongside others. Less gets lost when a project ends. Where the invisible labor of coordination becomes visible. You don't have to carry everything&nbsp;alone.</p>
         </div>
       </section>
 
@@ -484,23 +472,48 @@
       <section class="panel" id="panel-4">
         <div class="panel-inner">
           <span class="eyebrow">A doorway</span>
-          <h2>There's a map here.</h2>
+          <h2>Commoning is a choice.</h2>
           <p>The regenerative movement doesn't need us to create something new. It needs us to share and tend to what's in front&nbsp;of&nbsp;us.</p>
-          <p>We ask everyone who enters to plant something first. A vision. A sentence.&nbsp;A&nbsp;seed.</p>
+          <p>Everyone who finds their way here is invited to plant something first. An ask. A sentence. A seed. For what you hope can blossom within the Regen&nbsp;Commons.</p>
         </div>
       </section>
 
-      <!-- Panel 6: DECLARATION CARD -->
-      <section class="panel panel--threshold" id="panel-5">
-        <div class="panel-inner declaration-card">
-          <span class="declaration-eyebrow">Offer your vision</span>
-          <p class="declaration-prompt">What futures emerge from commoning?</p>
-          <p class="declaration-sub">A sentence, a hope, a seed. What you plant here joins what others have planted.</p>
+      <!-- Panel 6: GLIMPSE -->
+      <section class="panel" id="panel-5">
+        <div class="panel-inner panel-inner--glimpse">
+          <span class="eyebrow">Already in the ground</span>
+          <h2>Explore what's been planted.</h2>
+          <p>Hover over the seeds to see what's growing.</p>
+          <div class="seed-dots" id="learn-seed-dots">
+            <div class="seed-dot" data-vision="Knowledge that outlasts the organizations that made it."></div>
+            <div class="seed-dot" data-vision="Coordination without burning out the coordinator."></div>
+            <div class="seed-dot" data-vision="A place to return to — not a platform that extracts and moves on."></div>
+            <div class="seed-dot" data-vision="Governance that doesn't require a lawyer to understand."></div>
+            <div class="seed-dot" data-vision="Belonging without permission."></div>
+            <div class="seed-dot" data-vision="The ground beneath the work."></div>
+            <div class="seed-dot" data-vision="A commons that's alive — not just archived."></div>
+          </div>
+          <div class="seed-tooltip" id="seed-tooltip" style="display:none;">
+            <span class="seed-tooltip-vision"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Panel 7: DECLARATION CARD (mirrors declaration.html form state) -->
+      <section class="panel panel--threshold" id="panel-6">
+        <div class="panel-inner declaration-card declaration-card--pulse">
+          <span class="declaration-eyebrow">Make an offering</span>
+          <p class="declaration-prompt">I wish we would common&hellip;</p>
+          <p class="declaration-sub">
+            Add your vision to shape what becomes possible in our shared commons.
+            A sentence, a hope, a seed. It doesn't have to be polished.
+            What you plant here joins what others have planted — together, these visions become the field.
+          </p>
           <textarea
             id="learn-vision-input"
             class="declaration-textarea"
             rows="3"
-            placeholder="Write here — a sentence is enough…"
+            placeholder="Write here…"
             aria-label="Your vision for the commons"
           ></textarea>
           <button class="btn" id="learn-offer-btn"><span class="btn-label">Plant this seed</span> &rarr;</button>
@@ -581,6 +594,26 @@
 
     /* ── Init ──────────────────────────────────────────────────────────── */
     updateUI();
+
+    /* ── Hash navigation (e.g. #plant scrolls to last panel) ────────────── */
+    function hashToPanelIndex(hash) {
+      if (!hash) return -1;
+      if (hash === '#plant') return totalPanels - 1;
+      var m = hash.match(/^#panel-(\d+)$/);
+      if (m) return parseInt(m[1], 10);
+      return -1;
+    }
+    function applyHash() {
+      var idx = hashToPanelIndex(window.location.hash);
+      if (idx >= 0 && idx < totalPanels) {
+        // Jump without smooth scroll on initial land, smooth after
+        panels[idx].scrollIntoView({ inline: 'start', block: 'nearest' });
+        currentIndex = idx;
+        updateUI();
+      }
+    }
+    applyHash();
+    window.addEventListener('hashchange', applyHash);
   })();
   </script>
 
@@ -591,20 +624,11 @@
     var tooltip = document.getElementById('seed-tooltip');
     if (!tooltip || !dots.length) return;
 
-    var stageEl = tooltip.querySelector('.seed-tooltip-stage');
-    var titleEl = tooltip.querySelector('.seed-tooltip-title');
-    var descEl = tooltip.querySelector('.seed-tooltip-desc');
-    var byEl = tooltip.querySelector('.seed-tooltip-by');
+    var visionEl = tooltip.querySelector('.seed-tooltip-vision');
 
     dots.forEach(function(dot) {
       dot.addEventListener('mouseenter', function() {
-        if (stageEl && dot.dataset.stage) {
-          stageEl.textContent = dot.dataset.stage;
-          stageEl.style.display = 'block';
-        }
-        titleEl.textContent = dot.dataset.title;
-        descEl.textContent = dot.dataset.desc;
-        byEl.textContent = 'Contributed by ' + dot.dataset.by;
+        if (visionEl) visionEl.textContent = '"' + (dot.dataset.vision || '') + '"';
         tooltip.style.display = 'block';
       });
       dot.addEventListener('mouseleave', function() {
@@ -631,7 +655,19 @@
         localStorage.setItem('regen_vision', text);
         localStorage.setItem('regen_vision_time', Date.now().toString());
       } catch(_) {}
-      window.location.href = 'declaration.html#planted';
+      // Morph: fade the card and page before navigating so the handoff
+      // to declaration.html feels continuous (declaration picks up on #planted).
+      var card = btn.closest('.declaration-card');
+      if (card) {
+        card.style.transition = 'opacity 0.9s ease, transform 0.9s ease';
+        card.style.opacity = '0';
+        card.style.transform = 'scale(0.96)';
+      }
+      document.body.style.transition = 'opacity 0.9s ease';
+      setTimeout(function() { document.body.style.opacity = '0'; }, 300);
+      setTimeout(function() {
+        window.location.href = 'declaration.html#planted';
+      }, 1000);
     });
   })();
   </script>
