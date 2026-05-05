@@ -43,11 +43,7 @@
   margin-top: 0.8rem;
 }
 
-/* Stage label inline with card type */
-.card-header-text .experiment-stage {
-  margin-left: 0.5rem;
-  vertical-align: middle;
-}
+/* (Stage chip alignment now handled by .card-tags flex container.) */
 
 /* Section spacing */
 .ecosystem,
@@ -138,12 +134,13 @@
   .commons-grid { grid-template-columns: 1fr; }
 }
 
-/* Filter buttons */
+/* Filter buttons — full-width row, evenly distributed */
 .map-filters-inline {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-bottom: 1.5rem;
+  width: 100%;
 }
 .filter-btn {
   font-family: 'Space Grotesk', sans-serif;
@@ -151,12 +148,26 @@
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  padding: 0.4rem 1rem;
+  padding: 0.6rem 0.8rem;
   border: 1px solid rgba(var(--copper-rgb), 0.2);
   background: none;
   color: var(--ink-mid);
   cursor: pointer;
   transition: all 0.25s;
+  flex: 1 1 auto;
+  min-width: max-content;
+  text-align: center;
+  white-space: nowrap;
+}
+.filter-divider {
+  flex: 0 0 100%;
+  height: 0;
+  margin: 0.25rem 0;
+  border: none;
+  border-bottom: 1px dashed rgba(var(--copper-rgb), 0.18);
+}
+@media (max-width: 720px) {
+  .filter-btn { flex: 1 1 auto; }
 }
 .filter-btn.active,
 .filter-btn:hover {
@@ -182,20 +193,65 @@
 }
 .card-icon { display: none; }
 .card-header-text { flex: 1; min-width: 0; text-align: left; }
-.card-type {
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+  margin-top: 0.7rem;
+  padding-top: 0.6rem;
+  border-top: 1px dashed rgba(var(--copper-rgb), 0.10);
+}
+.card-type,
+.card-capital,
+.card-tier,
+.card-tags .experiment-stage {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 0.5rem;
-  letter-spacing: 0.15em;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.22rem 0.55rem;
+  margin: 0;
+  border: 1px solid;
+  line-height: 1.15;
+  white-space: nowrap;
+  max-width: 100%;
+}
+.card-type {
   color: var(--teal);
-  display: inline-block;
+  border-color: rgba(var(--teal-rgb), 0.35);
 }
-.card-header-text .experiment-stage {
-  display: inline-block;
-  margin-top: 0.6rem;
-  margin-bottom: 0.2rem;
-  width: auto;
+/* Capital chip — colored per form */
+.card-capital {
+  color: var(--ink-mid);
+  border-color: rgba(var(--copper-rgb), 0.25);
 }
+.card-capital[data-capital="intellectual"] { color: var(--forest); border-color: rgba(var(--forest-rgb), 0.35); }
+.card-capital[data-capital="social"]       { color: var(--copper); border-color: rgba(var(--copper-rgb), 0.4); }
+.card-capital[data-capital="cultural"]     { color: var(--gold);   border-color: rgba(var(--gold-rgb), 0.4); }
+.card-capital[data-capital="experiential"] { color: var(--teal);   border-color: rgba(var(--teal-rgb), 0.35); }
+.card-capital[data-capital="material"]     { color: var(--moss);   border-color: rgba(var(--forest-rgb), 0.3); }
+.card-capital[data-capital="living"]       { color: var(--forest); border-color: rgba(var(--forest-rgb), 0.4); }
+.card-capital[data-capital="financial"]    { color: var(--amber);  border-color: rgba(224, 120, 48, 0.4); }
+.card-capital[data-capital="spiritual"]    { color: var(--gold);   border-color: rgba(var(--gold-rgb), 0.35); }
+/* Tier chip — neutral, but the tier number bolded */
+.card-tier {
+  color: var(--ink-dim);
+  border-color: rgba(var(--copper-rgb), 0.2);
+}
+.card-tier strong {
+  color: var(--ink);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+}
+.card-tier[data-tier="1"] strong { color: var(--copper); }
+.card-tier[data-tier="2"] strong { color: var(--copper); }
+.card-tier[data-tier="3"] strong { color: var(--teal); }
+.card-tier[data-tier="4"] strong { color: var(--forest); }
+/* Stage chip styling lives in the .card-tags ruleset above; per-stage colors below. */
 .card-name {
   font-family: 'Fraunces', Georgia, serif;
   font-size: 0.95rem;
@@ -234,21 +290,17 @@
   flex-shrink: 0;
   transition: color 0.2s;
 }
-.card-toggle:hover { color: var(--ink); }
-.commons-card.open .card-toggle { transform: rotate(45deg); }
-.card-body-wrap {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.35s ease;
-}
-.commons-card.open .card-body-wrap {
-  grid-template-rows: 1fr;
-}
+.card-toggle:hover { color: var(--ink); transform: translateX(2px); }
+.commons-card { cursor: pointer; transition: border-color 0.2s; }
+.commons-card:hover { border-color: rgba(var(--copper-rgb), 0.35); }
+.card-body-wrap { display: none; }
 .card-body {
   overflow: hidden;
 }
 .card-body-inner {
-  padding: 0 1.2rem 1.2rem;
+  margin: 0 1.2rem;
+  padding: 1.2rem 0;
+  border-top: 1px solid rgba(var(--copper-rgb), 0.12);
 }
 .card-body-inner p {
   font-size: 0.85rem;
@@ -411,11 +463,301 @@ body[data-page="map"] .btn:hover {
   margin-top: 0.2rem;
 }
 
+/* ── Capital legend ── */
+.capital-legend {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+}
+.capital-legend-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(var(--copper-rgb), 0.1);
+  background: var(--parchment);
+}
+.capital-glyph {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--paper);
+  background: var(--ink-mid);
+}
+.capital-legend-item[data-capital="intellectual"] .capital-glyph { background: var(--forest); }
+.capital-legend-item[data-capital="social"]       .capital-glyph { background: var(--copper); }
+.capital-legend-item[data-capital="cultural"]     .capital-glyph { background: var(--gold); }
+.capital-legend-item[data-capital="experiential"] .capital-glyph { background: var(--teal); }
+.capital-legend-item[data-capital="material"]     .capital-glyph { background: var(--moss); }
+.capital-legend-item[data-capital="living"]       .capital-glyph { background: var(--forest); }
+.capital-legend-item[data-capital="financial"]    .capital-glyph { background: var(--amber); }
+.capital-legend-item[data-capital="spiritual"]    .capital-glyph { background: var(--gold); }
+.capital-legend-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  display: block;
+  margin-bottom: 0.2rem;
+}
+.capital-legend-desc {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 0.72rem;
+  color: var(--ink-mid);
+  line-height: 1.5;
+  display: block;
+}
+
+/* ── Tier legend (with Indexed / Within grouping) ── */
+.tier-legend {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+}
+.tier-group {
+  border: 1px solid rgba(var(--copper-rgb), 0.12);
+  background: var(--parchment);
+  padding: 1rem 1.2rem;
+}
+.tier-group-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent, var(--copper));
+  display: block;
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(var(--copper-rgb), 0.10);
+}
+.tier-item {
+  display: flex;
+  gap: 0.7rem;
+  padding: 0.5rem 0;
+  align-items: baseline;
+}
+.tier-item + .tier-item { border-top: 1px dashed rgba(var(--copper-rgb), 0.08); }
+.tier-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  flex-shrink: 0;
+  min-width: 3.2rem;
+}
+.tier-name {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 0.85rem;
+  color: var(--ink);
+  line-height: 1.4;
+  display: block;
+  margin-bottom: 0.15rem;
+}
+.tier-desc {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 0.72rem;
+  color: var(--ink-mid);
+  line-height: 1.5;
+  display: block;
+}
+
+@media (max-width: 800px) {
+  .capital-legend { grid-template-columns: repeat(2, 1fr); }
+}
 @media (max-width: 640px) {
   .map-hero { padding: 6rem 0 3rem; }
   .ecosystem canvas { height: 350px; }
   .stage-legend { grid-template-columns: 1fr 1fr; }
+  .capital-legend { grid-template-columns: 1fr; }
+  .tier-legend { grid-template-columns: 1fr; }
 }
+
+/* ── Contributor name link (in card-contributor span) ── */
+.contributor-link {
+  font: inherit;
+  color: var(--copper);
+  background: none;
+  border: none;
+  border-bottom: 1px dashed rgba(var(--copper-rgb), 0.4);
+  padding: 0;
+  cursor: pointer;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  transition: color 0.2s, border-color 0.2s;
+}
+.contributor-link:hover {
+  color: var(--amber);
+  border-bottom-color: var(--amber);
+}
+
+/* ── Shared modal ── */
+.rc-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+.rc-modal.open {
+  display: flex;
+}
+.rc-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  animation: rc-modal-fade 0.2s ease-out;
+}
+.rc-modal-panel {
+  position: relative;
+  background: var(--paper);
+  border: 1px solid rgba(var(--copper-rgb), 0.25);
+  max-width: 720px;
+  width: 100%;
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  padding: 2.4rem 2.4rem 2.4rem;
+  z-index: 1;
+  animation: rc-modal-rise 0.25s ease-out;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55);
+}
+@keyframes rc-modal-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes rc-modal-rise {
+  from { opacity: 0; transform: translateY(12px) scale(0.985); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+.rc-modal-close {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.9rem;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--ink-mid);
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 0;
+}
+.rc-modal-close:hover { color: var(--ink); }
+
+/* Modal content — card detail flavor */
+.rc-modal-content .modal-eyebrow {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent, var(--copper));
+  display: block;
+  margin-bottom: 0.6rem;
+}
+.rc-modal-content .modal-name {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--ink);
+  margin: 0 0 0.6rem;
+  line-height: 1.2;
+}
+.rc-modal-content .modal-meta {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 0.85rem;
+  color: var(--ink-mid);
+  margin-bottom: 1.4rem;
+  font-style: italic;
+}
+.rc-modal-content .modal-body p {
+  font-size: 0.92rem;
+  line-height: 1.75;
+  color: var(--ink-mid);
+  margin-bottom: 1rem;
+}
+.rc-modal-content .modal-body .card-terms {
+  font-size: 0.8rem;
+  color: var(--ink-dim);
+}
+.rc-modal-content .modal-body .card-action-link {
+  display: inline-block;
+  margin-top: 0.8rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--teal);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(var(--teal-rgb), 0.4);
+  padding-bottom: 0.15rem;
+}
+.rc-modal-content .modal-body .card-action-link:hover {
+  border-bottom-color: var(--teal);
+}
+.rc-modal-content .card-tags {
+  border-top: none;
+  border-bottom: 1px dashed rgba(var(--copper-rgb), 0.10);
+  margin: 0 0 1.6rem;
+  padding: 0 0 1rem;
+}
+/* Profile flavor */
+.rc-modal-content .modal-profile-section {
+  margin-top: 1.4rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(var(--copper-rgb), 0.10);
+}
+.rc-modal-content .modal-profile-section h4 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-bottom: 0.5rem;
+}
+.rc-modal-content .modal-profile-section p {
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--ink-mid);
+}
+.rc-modal-content .modal-placeholder {
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  border: 1px dashed rgba(var(--copper-rgb), 0.25);
+  background: rgba(var(--copper-rgb), 0.04);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+body.rc-modal-locked { overflow: hidden; }
+
+@media (max-width: 640px) {
+  .rc-modal { padding: 1rem 0.6rem; }
+  .rc-modal-panel { padding: 2.2rem 1.4rem 1.6rem; }
+  .rc-modal-content .modal-name { font-size: 1.3rem; }
+}
+
   </style>
   <script>(function(){var t=localStorage.getItem('rc-theme')||'dark';document.documentElement.setAttribute('data-theme',t)})()</script>
 </head>
@@ -432,6 +774,7 @@ body[data-page="map"] .btn:hover {
   </button>
 
   <nav class="page-nav" aria-label="Site navigation">
+    <a href="index.html" class="page-nav-dot" data-label="Home"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg></a>
     <a href="learn.html" class="page-nav-dot" data-label="Learn"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></a>
     <a href="learn.html#plant" class="page-nav-dot" data-label="Plant"><svg viewBox="0 0 24 24"><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 10-10v3a7 7 0 0 1-7 7z"/><path d="M19 12h3a10 10 0 0 1-10-10v3a7 7 0 0 0 7 7z"/></svg></a>
     <a href="map.html" class="page-nav-dot active" data-label="Map"><svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></a>
@@ -505,8 +848,108 @@ body[data-page="map"] .btn:hover {
         </div>
       </div>
 
+      <!-- Forms of Capital -->
+      <h3 class="library-subheading">Forms of Capital</h3>
+      <div class="capital-legend">
+        <div class="capital-legend-item" data-capital="intellectual">
+          <span class="capital-glyph" aria-hidden="true">In</span>
+          <div>
+            <span class="capital-legend-name">Intellectual</span>
+            <span class="capital-legend-desc">Knowledge, research, methodologies, frameworks,&nbsp;IP.</span>
+          </div>
+        </div>
+        <div class="capital-legend-item" data-capital="social">
+          <span class="capital-glyph" aria-hidden="true">So</span>
+          <div>
+            <span class="capital-legend-name">Social</span>
+            <span class="capital-legend-desc">Networks, relationships, introductions, trust&nbsp;bridges.</span>
+          </div>
+        </div>
+        <div class="capital-legend-item" data-capital="cultural">
+          <span class="capital-glyph" aria-hidden="true">Cu</span>
+          <div>
+            <span class="capital-legend-name">Cultural</span>
+            <span class="capital-legend-desc">Practices, narratives, rituals, ways of&nbsp;being.</span>
+          </div>
+        </div>
+        <div class="capital-legend-item" data-capital="experiential">
+          <span class="capital-glyph" aria-hidden="true">Ex</span>
+          <div>
+            <span class="capital-legend-name">Experiential</span>
+            <span class="capital-legend-desc">Lived know-how, facilitation skill, embodied&nbsp;practice.</span>
+          </div>
+        </div>
+        <div class="capital-legend-item" data-capital="material">
+          <span class="capital-glyph" aria-hidden="true">Ma</span>
+          <div>
+            <span class="capital-legend-name">Material</span>
+            <span class="capital-legend-desc">Tools, infrastructure, physical&nbsp;resources.</span>
+          </div>
+        </div>
+        <div class="capital-legend-item" data-capital="living">
+          <span class="capital-glyph" aria-hidden="true">Li</span>
+          <div>
+            <span class="capital-legend-name">Living</span>
+            <span class="capital-legend-desc">Land, ecosystems, biological systems&nbsp;stewarded.</span>
+          </div>
+        </div>
+        <div class="capital-legend-item" data-capital="financial">
+          <span class="capital-glyph" aria-hidden="true">Fi</span>
+          <div>
+            <span class="capital-legend-name">Financial</span>
+            <span class="capital-legend-desc">Funding, grants, treasury&nbsp;contributions.</span>
+          </div>
+        </div>
+        <div class="capital-legend-item" data-capital="spiritual">
+          <span class="capital-glyph" aria-hidden="true">Sp</span>
+          <div>
+            <span class="capital-legend-name">Spiritual</span>
+            <span class="capital-legend-desc">Care, integrity, presence, moral&nbsp;authority.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contribution Tiers -->
+      <h3 class="library-subheading">Contribution Tiers</h3>
+      <div class="tier-legend">
+        <div class="tier-group" data-group="indexed">
+          <span class="tier-group-label">Indexed</span>
+          <div class="tier-item">
+            <span class="tier-num">Tier 1</span>
+            <div>
+              <span class="tier-name">Indexed</span>
+              <span class="tier-desc">Discoverable in the commons catalogue. Stewards remain in full control.</span>
+            </div>
+          </div>
+          <div class="tier-item">
+            <span class="tier-num">Tier 2</span>
+            <div>
+              <span class="tier-name">Member-Privileged</span>
+              <span class="tier-desc">Members get preferential access &mdash; previews, queries, light usage rights.</span>
+            </div>
+          </div>
+        </div>
+        <div class="tier-group" data-group="within">
+          <span class="tier-group-label">Within</span>
+          <div class="tier-item">
+            <span class="tier-num">Tier 3</span>
+            <div>
+              <span class="tier-name">Licensed</span>
+              <span class="tier-desc">Available under a shared CopyFair license with reciprocity terms.</span>
+            </div>
+          </div>
+          <div class="tier-item">
+            <span class="tier-num">Tier 4</span>
+            <div>
+              <span class="tier-name">Fully Contributed</span>
+              <span class="tier-desc">Held by the commons itself &mdash; freely usable and stewarded collectively.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Filters (inline, above grid) -->
-      <h3 class="library-subheading">Filter by type or stage</h3>
+      <h3 class="library-subheading">Filter</h3>
       <div class="map-filters-inline">
         <button class="filter-btn active" data-filter="all">All</button>
         <button class="filter-btn" data-filter="knowledge">Knowledge</button>
@@ -514,6 +957,7 @@ body[data-page="map"] .btn:hover {
         <button class="filter-btn" data-filter="brand">Brand &amp; IP</button>
         <button class="filter-btn" data-filter="governance">Governance &amp; Legal</button>
         <button class="filter-btn" data-filter="coordination">Coordination</button>
+        <span class="filter-divider" aria-hidden="true"></span>
         <button class="filter-btn" data-filter="seed">Seed</button>
         <button class="filter-btn" data-filter="sprout">Sprout</button>
         <button class="filter-btn" data-filter="flowering">Flowering</button>
@@ -541,13 +985,16 @@ body[data-page="map"] .btn:hover {
               <circle cx="52" cy="20" r="2" fill="#1A7860" opacity="0.5"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Knowledge</span>
               <h3 class="card-name">Indexed Knowledge Base</h3>
               <span class="card-teaser">76,000+ documents across 20+ source types — research, transcripts, governance frameworks, field guides</span>
-              <span class="experiment-stage">Flowering</span>
-              <span class="card-contributor">Contributed by Regen Network</span>
-            </div>
-            <button class="card-toggle" aria-label="Expand">+</button>
+              <span class="card-contributor">Contributed by <button type="button" class="contributor-link" data-name="Regen Network">Regen Network</button></span>
+              <div class="card-tags">
+                <span class="card-type">Knowledge</span>
+                <span class="card-capital" data-capital="intellectual">Intellectual</span>
+                <span class="card-tier" data-tier="1"><strong>Tier 1</strong> · Indexed</span>
+                <span class="experiment-stage">Flowering</span>
+              </div>            </div>
+            <button class="card-toggle" aria-label="Open details">&rarr;</button>
           </div>
           <div class="card-body-wrap">
             <div class="card-body">
@@ -569,13 +1016,16 @@ body[data-page="map"] .btn:hover {
               <circle cx="30" cy="20" r="2.5" fill="#1A7860" opacity="0.5"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Knowledge</span>
               <h3 class="card-name">Podcast Transcripts &amp; Knowledge Graph</h3>
               <span class="card-teaser">ReFi Podcast archive — indexed transcripts, structured datasets, and curated knowledge graphs</span>
-              <span class="experiment-stage">Sprout</span>
-              <span class="card-contributor">Contributed by ReFi DAO</span>
-            </div>
-            <button class="card-toggle" aria-label="Expand">+</button>
+              <span class="card-contributor">Contributed by <button type="button" class="contributor-link" data-name="ReFi DAO">ReFi DAO</button></span>
+              <div class="card-tags">
+                <span class="card-type">Knowledge</span>
+                <span class="card-capital" data-capital="intellectual">Intellectual</span>
+                <span class="card-tier" data-tier="1"><strong>Tier 1</strong> · Indexed</span>
+                <span class="experiment-stage">Sprout</span>
+              </div>            </div>
+            <button class="card-toggle" aria-label="Open details">&rarr;</button>
           </div>
           <div class="card-body-wrap">
             <div class="card-body">
@@ -598,13 +1048,16 @@ body[data-page="map"] .btn:hover {
               <circle cx="10" cy="50" r="2.5" fill="#1A7860" opacity="0.4"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Knowledge</span>
               <h3 class="card-name">Educational Materials &amp; Community Knowledge</h3>
               <span class="card-teaser">Course content, learning guides, and community coordination knowledge</span>
-              <span class="experiment-stage">Seed</span>
-              <span class="card-contributor">Contributed by Greenpill Network</span>
-            </div>
-            <button class="card-toggle" aria-label="Expand">+</button>
+              <span class="card-contributor">Contributed by <button type="button" class="contributor-link" data-name="Greenpill Network">Greenpill Network</button></span>
+              <div class="card-tags">
+                <span class="card-type">Knowledge</span>
+                <span class="card-capital" data-capital="cultural">Cultural</span>
+                <span class="card-tier" data-tier="2"><strong>Tier 2</strong> · Member-Privileged</span>
+                <span class="experiment-stage">Seed</span>
+              </div>            </div>
+            <button class="card-toggle" aria-label="Open details">&rarr;</button>
           </div>
           <div class="card-body-wrap">
             <div class="card-body">
@@ -626,13 +1079,16 @@ body[data-page="map"] .btn:hover {
               <line x1="30" y1="12" x2="30" y2="48" stroke="#1A7860" stroke-width="0.5" opacity="0.4"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Knowledge</span>
               <h3 class="card-name">Governance Frameworks &amp; Institutional Design</h3>
               <span class="card-teaser">Reusable governance templates, civic coordination patterns, and institutional design documents</span>
-              <span class="experiment-stage">Seed</span>
-              <span class="card-contributor">Contributed by OpenCivics</span>
-            </div>
-            <button class="card-toggle" aria-label="Expand">+</button>
+              <span class="card-contributor">Contributed by <button type="button" class="contributor-link" data-name="OpenCivics">OpenCivics</button></span>
+              <div class="card-tags">
+                <span class="card-type">Knowledge</span>
+                <span class="card-capital" data-capital="intellectual">Intellectual</span>
+                <span class="card-tier" data-tier="2"><strong>Tier 2</strong> · Member-Privileged</span>
+                <span class="experiment-stage">Seed</span>
+              </div>            </div>
+            <button class="card-toggle" aria-label="Open details">&rarr;</button>
           </div>
           <div class="card-body-wrap">
             <div class="card-body">
@@ -662,13 +1118,16 @@ body[data-page="map"] .btn:hover {
               <circle cx="30" cy="30" r="4" fill="rgba(42,104,136,0.25)" stroke="#2A6888" stroke-width="0.6"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Infrastructure</span>
               <h3 class="card-name">KOI — Knowledge Organisation Infrastructure</h3>
               <span class="card-teaser">Open-source interoperability protocol for federated knowledge commons</span>
-              <span class="experiment-stage">Sprout</span>
-              <span class="card-contributor">Maintained by BlockScience / Metagov / RMIT</span>
-            </div>
-            <button class="card-toggle" aria-label="Expand">+</button>
+              <span class="card-contributor">Contributed by <button type="button" class="contributor-link" data-name="BlockScience / Metagov / RMIT">BlockScience / Metagov / RMIT</button></span>
+              <div class="card-tags">
+                <span class="card-type">Infrastructure</span>
+                <span class="card-capital" data-capital="material">Material</span>
+                <span class="card-tier" data-tier="3"><strong>Tier 3</strong> · Licensed</span>
+                <span class="experiment-stage">Sprout</span>
+              </div>            </div>
+            <button class="card-toggle" aria-label="Open details">&rarr;</button>
           </div>
           <div class="card-body-wrap">
             <div class="card-body">
@@ -695,13 +1154,16 @@ body[data-page="map"] .btn:hover {
               <path d="M30 30 Q42 36 50 44" stroke="#2A6888" stroke-width="0.7" fill="none"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Infrastructure</span>
               <h3 class="card-name">AI Agents &amp; Querying Tooling</h3>
               <span class="card-teaser">Organizational agents for cross-org knowledge synthesis, search, and collaboration</span>
-              <span class="experiment-stage">Sprout</span>
-              <span class="card-contributor">Built by Darren &amp; Sean (GaiaAI) · Maintained by Regen Network</span>
-            </div>
-            <button class="card-toggle" aria-label="Expand">+</button>
+              <span class="card-contributor">Contributed by <button type="button" class="contributor-link" data-name="Darren &amp;amp; Sean (GaiaAI)">Darren &amp; Sean (GaiaAI)</button>, <button type="button" class="contributor-link" data-name="Regen Network">Regen Network</button></span>
+              <div class="card-tags">
+                <span class="card-type">Infrastructure</span>
+                <span class="card-capital" data-capital="material">Material</span>
+                <span class="card-tier" data-tier="3"><strong>Tier 3</strong> · Licensed</span>
+                <span class="experiment-stage">Sprout</span>
+              </div>            </div>
+            <button class="card-toggle" aria-label="Open details">&rarr;</button>
           </div>
           <div class="card-body-wrap">
             <div class="card-body">
@@ -727,13 +1189,16 @@ body[data-page="map"] .btn:hover {
               <line x1="20" y1="45" x2="40" y2="45" stroke="#944818" stroke-width="0.6" opacity="0.5"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Brand &amp; IP</span>
               <h3 class="card-name">Regen Trademark</h3>
               <span class="card-teaser">USPTO #90790939 — the "Regen" mark and member certification, held in trust as a commons asset</span>
-              <span class="experiment-stage">Flowering</span>
-              <span class="card-contributor">Filed by Regen Network · Administered by Steward Council</span>
-            </div>
-            <button class="card-toggle" aria-label="Expand">+</button>
+              <span class="card-contributor">Contributed by <button type="button" class="contributor-link" data-name="Regen Network">Regen Network</button>, <button type="button" class="contributor-link" data-name="Steward Council">Steward Council</button></span>
+              <div class="card-tags">
+                <span class="card-type">Brand &amp; IP</span>
+                <span class="card-capital" data-capital="cultural">Cultural</span>
+                <span class="card-tier" data-tier="4"><strong>Tier 4</strong> · Fully Contributed</span>
+                <span class="experiment-stage">Flowering</span>
+              </div>            </div>
+            <button class="card-toggle" aria-label="Open details">&rarr;</button>
           </div>
           <div class="card-body-wrap">
             <div class="card-body">
@@ -754,13 +1219,16 @@ body[data-page="map"] .btn:hover {
               <circle cx="30" cy="30" r="5" stroke="#944818" stroke-width="0.7" fill="rgba(148,72,24,0.2)"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Brand &amp; IP</span>
               <h3 class="card-name">Brand Identity System</h3>
               <span class="card-teaser">Visual identity, tone of voice, typography, color palette, co-branding templates, and messaging framework</span>
-              <span class="experiment-stage">Sprout</span>
-              <span class="card-contributor">Designed by Patricia Parkinson · Commissioned by Steward Council</span>
-            </div>
-            <button class="card-toggle" aria-label="Expand">+</button>
+              <span class="card-contributor">Contributed by <button type="button" class="contributor-link" data-name="Patricia Parkinson">Patricia Parkinson</button>, <button type="button" class="contributor-link" data-name="Steward Council">Steward Council</button></span>
+              <div class="card-tags">
+                <span class="card-type">Brand &amp; IP</span>
+                <span class="card-capital" data-capital="cultural">Cultural</span>
+                <span class="card-tier" data-tier="4"><strong>Tier 4</strong> · Fully Contributed</span>
+                <span class="experiment-stage">Sprout</span>
+              </div>            </div>
+            <button class="card-toggle" aria-label="Open details">&rarr;</button>
           </div>
           <div class="card-body-wrap">
             <div class="card-body">
@@ -787,13 +1255,16 @@ body[data-page="map"] .btn:hover {
               <line x1="4"  y1="30" x2="56" y2="30" stroke="#A87010" stroke-width="0.3" opacity="0.2"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Governance &amp; Legal</span>
               <h3 class="card-name">The Constitution Stack</h3>
               <span class="card-teaser">Identity, principles, membrane model, roles, mandates — layered like tree rings</span>
-              <span class="experiment-stage">Flowering</span>
-              <span class="card-contributor">Authored by Steward Council · Led by Gregory Landua &amp; Monty Bryant</span>
-            </div>
-            <button class="card-toggle" aria-label="Expand">+</button>
+              <span class="card-contributor">Contributed by <button type="button" class="contributor-link" data-name="Steward Council">Steward Council</button>, <button type="button" class="contributor-link" data-name="Gregory Landua &amp;amp; Monty Bryant">Gregory Landua &amp; Monty Bryant</button></span>
+              <div class="card-tags">
+                <span class="card-type">Governance &amp; Legal</span>
+                <span class="card-capital" data-capital="intellectual">Intellectual</span>
+                <span class="card-tier" data-tier="4"><strong>Tier 4</strong> · Fully Contributed</span>
+                <span class="experiment-stage">Flowering</span>
+              </div>            </div>
+            <button class="card-toggle" aria-label="Open details">&rarr;</button>
           </div>
           <div class="card-body-wrap">
             <div class="card-body">
@@ -816,13 +1287,16 @@ body[data-page="map"] .btn:hover {
               <line x1="30" y1="20" x2="30" y2="40" stroke="#A87010" stroke-width="0.4" opacity="0.4"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Governance &amp; Legal</span>
               <h3 class="card-name">Commons Knowledge License</h3>
               <span class="card-teaser">CopyFair-based — use freely within the commons, reciprocal sharing, protection against extraction</span>
-              <span class="experiment-stage">Flowering</span>
-              <span class="card-contributor">Drafted by Steven &amp; Mill Law Center · Reviewed by Steward Council</span>
-            </div>
-            <button class="card-toggle" aria-label="Expand">+</button>
+              <span class="card-contributor">Contributed by <button type="button" class="contributor-link" data-name="Steven &amp;amp; Mill Law Center">Steven &amp; Mill Law Center</button>, <button type="button" class="contributor-link" data-name="Steward Council">Steward Council</button></span>
+              <div class="card-tags">
+                <span class="card-type">Governance &amp; Legal</span>
+                <span class="card-capital" data-capital="intellectual">Intellectual</span>
+                <span class="card-tier" data-tier="4"><strong>Tier 4</strong> · Fully Contributed</span>
+                <span class="experiment-stage">Flowering</span>
+              </div>            </div>
+            <button class="card-toggle" aria-label="Open details">&rarr;</button>
           </div>
           <div class="card-body-wrap">
             <div class="card-body">
@@ -843,13 +1317,16 @@ body[data-page="map"] .btn:hover {
               <path d="M30 15.4 Q38 22 38 30 Q38 38 30 44.6 Q22 38 22 30 Q22 22 30 15.4Z" fill="rgba(168,112,16,0.15)" stroke="none"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Governance &amp; Legal</span>
               <h3 class="card-name">Membership Agreement</h3>
               <span class="card-teaser">The document that crosses an organization from observer to participant — commits to mission, reciprocity, license</span>
-              <span class="experiment-stage">Seed</span>
-              <span class="card-contributor">Drafted by Steward Council · Legal review by Mill Law Center</span>
-            </div>
-            <button class="card-toggle" aria-label="Expand">+</button>
+              <span class="card-contributor">Contributed by <button type="button" class="contributor-link" data-name="Steward Council">Steward Council</button>, <button type="button" class="contributor-link" data-name="Mill Law Center">Mill Law Center</button></span>
+              <div class="card-tags">
+                <span class="card-type">Governance &amp; Legal</span>
+                <span class="card-capital" data-capital="intellectual">Intellectual</span>
+                <span class="card-tier" data-tier="4"><strong>Tier 4</strong> · Fully Contributed</span>
+                <span class="experiment-stage">Seed</span>
+              </div>            </div>
+            <button class="card-toggle" aria-label="Open details">&rarr;</button>
           </div>
           <div class="card-body-wrap">
             <div class="card-body">
@@ -869,13 +1346,16 @@ body[data-page="map"] .btn:hover {
               <circle cx="30" cy="30" r="3" fill="#A87010" opacity="0.5"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Governance &amp; Legal</span>
               <h3 class="card-name">Steward Transition Protocol</h3>
               <span class="card-teaser">1-year renewable terms, graceful exit pathway, treasury handover — the system survives its founders</span>
-              <span class="experiment-stage">Seed</span>
-              <span class="card-contributor">Designed by Steward Council</span>
-            </div>
-            <button class="card-toggle" aria-label="Expand">+</button>
+              <span class="card-contributor">Contributed by <button type="button" class="contributor-link" data-name="Steward Council">Steward Council</button></span>
+              <div class="card-tags">
+                <span class="card-type">Governance &amp; Legal</span>
+                <span class="card-capital" data-capital="intellectual">Intellectual</span>
+                <span class="card-tier" data-tier="4"><strong>Tier 4</strong> · Fully Contributed</span>
+                <span class="experiment-stage">Seed</span>
+              </div>            </div>
+            <button class="card-toggle" aria-label="Open details">&rarr;</button>
           </div>
           <div class="card-body-wrap">
             <div class="card-body">
@@ -902,13 +1382,16 @@ body[data-page="map"] .btn:hover {
               <path d="M30 44 Q40 40 46 44" stroke="#1E3A10" stroke-width="0.5" fill="none" stroke-linecap="round" opacity="0.6"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Coordination</span>
               <h3 class="card-name">Steward Questionnaire Methodology</h3>
               <span class="card-teaser">A replicable process for distributed stakeholder alignment — gathering what a community actually needs</span>
-              <span class="experiment-stage">Seed</span>
-              <span class="card-contributor">Developed by Patricia Parkinson &amp; Monty Bryant</span>
-            </div>
-            <button class="card-toggle" aria-label="Expand">+</button>
+              <span class="card-contributor">Contributed by <button type="button" class="contributor-link" data-name="Patricia Parkinson &amp;amp; Monty Bryant">Patricia Parkinson &amp; Monty Bryant</button></span>
+              <div class="card-tags">
+                <span class="card-type">Coordination</span>
+                <span class="card-capital" data-capital="experiential">Experiential</span>
+                <span class="card-tier" data-tier="2"><strong>Tier 2</strong> · Member-Privileged</span>
+                <span class="experiment-stage">Seed</span>
+              </div>            </div>
+            <button class="card-toggle" aria-label="Open details">&rarr;</button>
           </div>
           <div class="card-body-wrap">
             <div class="card-body">
@@ -931,13 +1414,16 @@ body[data-page="map"] .btn:hover {
               <circle cx="30" cy="30" r="4" fill="rgba(30,58,16,0.25)" stroke="#1E3A10" stroke-width="0.6"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Coordination</span>
               <h3 class="card-name">Coordination Patterns &amp; Meeting Rhythms</h3>
               <span class="card-teaser">Decision formats, facilitation tools, sense-making practices — tested forms that hold groups through hard conversations</span>
-              <span class="experiment-stage">Sprout</span>
-              <span class="card-contributor">Contributed by OpenCivics &amp; Steward Council</span>
-            </div>
-            <button class="card-toggle" aria-label="Expand">+</button>
+              <span class="card-contributor">Contributed by <button type="button" class="contributor-link" data-name="OpenCivics &amp;amp; Steward Council">OpenCivics &amp; Steward Council</button></span>
+              <div class="card-tags">
+                <span class="card-type">Coordination</span>
+                <span class="card-capital" data-capital="social">Social</span>
+                <span class="card-tier" data-tier="2"><strong>Tier 2</strong> · Member-Privileged</span>
+                <span class="experiment-stage">Sprout</span>
+              </div>            </div>
+            <button class="card-toggle" aria-label="Open details">&rarr;</button>
           </div>
           <div class="card-body-wrap">
             <div class="card-body">
@@ -964,13 +1450,16 @@ body[data-page="map"] .btn:hover {
               <line x1="52" y1="12" x2="52" y2="18" stroke="#1E3A10" stroke-width="0.5" opacity="0.4"/>
             </svg>
             <div class="card-header-text">
-              <span class="card-type">Coordination</span>
               <h3 class="card-name">Funding Model &amp; Sustainability Arc</h3>
               <span class="card-teaser">Grant funding → reciprocal contribution → conditional licensing → revenue sharing</span>
-              <span class="experiment-stage">Seed</span>
-              <span class="card-contributor">Designed by Monty Bryant &amp; Gregory Landua</span>
-            </div>
-            <button class="card-toggle" aria-label="Expand">+</button>
+              <span class="card-contributor">Contributed by <button type="button" class="contributor-link" data-name="Monty Bryant &amp;amp; Gregory Landua">Monty Bryant &amp; Gregory Landua</button></span>
+              <div class="card-tags">
+                <span class="card-type">Coordination</span>
+                <span class="card-capital" data-capital="financial">Financial</span>
+                <span class="card-tier" data-tier="4"><strong>Tier 4</strong> · Fully Contributed</span>
+                <span class="experiment-stage">Seed</span>
+              </div>            </div>
+            <button class="card-toggle" aria-label="Open details">&rarr;</button>
           </div>
           <div class="card-body-wrap">
             <div class="card-body">
@@ -1332,10 +1821,8 @@ body[data-page="map"] .btn:hover {
       var mx = e.clientX - rect.left;
       var my = e.clientY - rect.top;
       var hit = getNodeAt(mx, my);
-      if (hit) {
-        // Scroll to the relevant section or show more info
-        // For now, just log and keep tooltip visible
-        console.log("Clicked node:", hit.label, hit.role);
+      if (hit && typeof window.openProfileModal === "function") {
+        window.openProfileModal(hit.label, { role: hit.role, kind: hit.type });
       }
     });
 
@@ -1435,6 +1922,15 @@ body[data-page="map"] .btn:hover {
 
   })();
   </script>
+
+  <!-- ═══ Shared modal (library cards · ecosystem profile) ═══ -->
+  <div class="rc-modal" id="rc-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="rc-modal-title">
+    <div class="rc-modal-backdrop" data-modal-close></div>
+    <div class="rc-modal-panel" role="document">
+      <button class="rc-modal-close" data-modal-close aria-label="Close">&times;</button>
+      <div class="rc-modal-content" id="rc-modal-content"></div>
+    </div>
+  </div>
 
 </body>
 </html>

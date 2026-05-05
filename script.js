@@ -107,7 +107,7 @@
 
     var page = document.body.dataset.page;
     if (page === "learn")       initLearnPage();
-    if (page === "declaration") initDeclarationPage();
+    if (page === "seeds")       initDeclarationPage();
     if (page === "map")         initMapPage();
   });
 
@@ -181,7 +181,7 @@
     });
 
     var btnReady = document.querySelector(".btn-ready");
-    if (btnReady) btnReady.addEventListener("click", function () { navigateTo("declaration.html"); });
+    if (btnReady) btnReady.addEventListener("click", function () { navigateTo("seeds.html"); });
 
     showStep(0);
   }
@@ -367,25 +367,28 @@
       requestAnimationFrame(function () { welcomeBack.style.opacity = "1"; });
     }
 
-    // ── Card expand / collapse ─────────────────────────────────────────────
+    // ── Card click → open modal ────────────────────────────────────────────
     var grid = document.getElementById("commons-grid");
     if (grid) {
       grid.addEventListener("click", function (e) {
-        // Don't close when clicking a link inside the card body
+        // Contributor link gets its own profile-modal handler — let it bubble.
+        if (e.target.closest(".contributor-link")) return;
+        // External action links should still navigate normally.
         if (e.target.closest(".card-action-link")) return;
 
         var card = e.target.closest(".commons-card");
         if (!card) return;
-
-        var wasOpen = card.classList.contains("open");
-        // Close any open card
-        grid.querySelectorAll(".commons-card.open").forEach(function (c) {
-          c.classList.remove("open");
-        });
-        // Open the clicked card if it wasn't already open
-        if (!wasOpen) card.classList.add("open");
+        window.openCardModal(card);
       });
     }
+
+    // ── Contributor name → profile modal ───────────────────────────────────
+    document.addEventListener("click", function (e) {
+      var link = e.target.closest(".contributor-link");
+      if (!link) return;
+      e.stopPropagation();
+      window.openProfileModal(link.dataset.name || link.textContent.trim());
+    });
 
     // ── Filter / view buttons ──────────────────────────────────────────────
     if (!grid) return;
@@ -470,6 +473,71 @@
         if (!e.target.closest(".member-dot")) tooltip.classList.remove("visible");
       });
     }
+
+    // ── Modal helpers (library cards · profile) ────────────────────────────
+    var modal       = document.getElementById("rc-modal");
+    var modalContent = document.getElementById("rc-modal-content");
+
+    function openModal(htmlContent) {
+      if (!modal || !modalContent) return;
+      modalContent.innerHTML = htmlContent;
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("rc-modal-locked");
+    }
+    function closeModal() {
+      if (!modal) return;
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("rc-modal-locked");
+      if (modalContent) modalContent.innerHTML = "";
+    }
+    if (modal) {
+      modal.addEventListener("click", function (e) {
+        if (e.target.closest("[data-modal-close]")) closeModal();
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
+      });
+    }
+
+    // Build the card detail modal from a card element's existing markup.
+    window.openCardModal = function (card) {
+      if (!card) return;
+      var nameEl     = card.querySelector(".card-name");
+      var teaserEl   = card.querySelector(".card-teaser");
+      var contribEl  = card.querySelector(".card-contributor");
+      var tagsEl     = card.querySelector(".card-tags");
+      var bodyEl     = card.querySelector(".card-body-inner");
+
+      var html = '';
+      html += '<span class="modal-eyebrow">Library entry</span>';
+      if (nameEl)    html += '<h2 class="modal-name">' + nameEl.innerHTML + '</h2>';
+      if (teaserEl)  html += '<p class="modal-meta">' + teaserEl.innerHTML + '</p>';
+      if (tagsEl)    html += tagsEl.outerHTML;
+      if (bodyEl)    html += '<div class="modal-body">' + bodyEl.innerHTML + '</div>';
+      if (contribEl) {
+        html += '<div class="modal-profile-section"><h4>Contributors</h4><p>' + contribEl.innerHTML.replace(/^Contributed by\s*/i, '') + '</p></div>';
+      }
+      openModal(html);
+    };
+
+    // Build a placeholder profile modal for a contributor / ecosystem node.
+    window.openProfileModal = function (name, opts) {
+      opts = opts || {};
+      var role  = opts.role || "Member of the regenerative commons";
+      var kind  = opts.kind === "person" ? "Individual" : (opts.kind === "org" ? "Organization" : "Profile");
+
+      var html = '';
+      html += '<span class="modal-eyebrow">' + kind + '</span>';
+      html += '<h2 class="modal-name">' + name + '</h2>';
+      html += '<p class="modal-meta">' + role + '</p>';
+      html += '<div class="modal-profile-section"><h4>About</h4><p>Profile content for <strong>' + name + '</strong> will live here once contributors complete their member onboarding.</p></div>';
+      html += '<div class="modal-profile-section"><h4>Contributions to the commons</h4><p>Library entries, governance work, and ongoing commitments authored or stewarded by ' + name + ' will be listed in this section.</p></div>';
+      html += '<div class="modal-profile-section"><h4>Connections</h4><p>Other members and organizations this profile is in active relationship with.</p></div>';
+      html += '<div class="modal-placeholder">Placeholder · profile schema TBD</div>';
+      openModal(html);
+    };
   }
 
   // ══════════════════════════════════════════════════════════════════════════
@@ -482,39 +550,27 @@
     var confirm    = document.getElementById("join-confirmation");
     var currentStep = 1;
 
-    // Populate vision echo from localStorage (planted during declaration)
-    var visionEcho = document.getElementById("join-vision-echo");
-    var visionEchoField = document.getElementById("vision-echo-field");
-    if (visionEcho) {
-      var savedVision = null;
-      try { savedVision = localStorage.getItem("regen_vision"); } catch (_) {}
-      if (savedVision) {
-        visionEcho.textContent = '"' + savedVision + '"';
-        visionEcho.style.fontStyle = "italic";
-        visionEcho.style.color = "var(--accent, var(--forest))";
-        visionEcho.style.padding = "1.2rem";
-        visionEcho.style.border = "1px solid rgba(var(--forest-rgb), 0.2)";
-        visionEcho.style.borderRadius = "2px";
-      } else if (visionEchoField) {
-        // If no vision was planted, hide this field entirely
-        visionEchoField.style.display = "none";
-      }
-    }
-
-    // Individual / Organization toggle
-    var toggleBtns = document.querySelectorAll(".join-toggle");
-    var typeInput  = document.getElementById("member-type");
-    var orgFields  = document.querySelectorAll(".join-org-fields");
-    toggleBtns.forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        toggleBtns.forEach(function (b) { b.classList.remove("active"); });
-        btn.classList.add("active");
-        typeInput.value = btn.dataset.value;
-        orgFields.forEach(function (f) {
-          f.style.display = btn.dataset.value === "organization" ? "block" : "none";
-        });
+    // Individual / Organization radio — reveal org-only fields
+    var applicantRadios = document.querySelectorAll('input[name="applicant-type"]');
+    var orgFields       = document.querySelectorAll(".join-org-fields");
+    function syncOrgFields() {
+      var selected = document.querySelector('input[name="applicant-type"]:checked');
+      var isOrg = selected && selected.value === "organization";
+      orgFields.forEach(function (f) {
+        f.style.display = isOrg ? "block" : "none";
       });
-    });
+    }
+    applicantRadios.forEach(function (r) { r.addEventListener("change", syncOrgFields); });
+    syncOrgFields();
+
+    // "Other" contribution-area checkbox reveals a free-text input
+    var otherCheckbox = document.getElementById("contrib-other");
+    var otherField    = document.querySelector(".join-other-field");
+    if (otherCheckbox && otherField) {
+      otherCheckbox.addEventListener("change", function () {
+        otherField.style.display = otherCheckbox.checked ? "block" : "none";
+      });
+    }
 
     function goToStep(n) {
       // Validate current step before advancing
@@ -540,15 +596,26 @@
     function validateStep(n) {
       var step = form.querySelector('.join-step[data-step="' + n + '"]');
       if (!step) return true;
-      var fields = step.querySelectorAll("[required]");
       var valid = true;
-      fields.forEach(function (f) {
+      // Track required radio groups (one validation per name)
+      var checkedGroups = {};
+      step.querySelectorAll("[required]").forEach(function (f) {
         var wrapper = f.closest(".join-field");
-        if (!f.value.trim()) {
+        if (f.type === "radio") {
+          if (checkedGroups[f.name]) return;
+          checkedGroups[f.name] = true;
+          var anyChecked = step.querySelector('input[name="' + f.name + '"]:checked');
+          if (!anyChecked) {
+            valid = false;
+            if (wrapper) wrapper.classList.add("has-error");
+          } else if (wrapper) {
+            wrapper.classList.remove("has-error");
+          }
+        } else if (!f.value.trim()) {
           valid = false;
           if (wrapper) wrapper.classList.add("has-error");
-        } else {
-          if (wrapper) wrapper.classList.remove("has-error");
+        } else if (wrapper) {
+          wrapper.classList.remove("has-error");
         }
       });
       return valid;
@@ -566,35 +633,21 @@
       });
     });
 
-    // Clear error on input
+    // Clear error on input or selection change
     if (form) {
-      form.addEventListener("input", function (e) {
+      function clearError(e) {
         var wrapper = e.target.closest(".join-field");
         if (wrapper) wrapper.classList.remove("has-error");
-      });
+      }
+      form.addEventListener("input", clearError);
+      form.addEventListener("change", clearError);
     }
 
     // Submit
     if (form) {
       form.addEventListener("submit", function (e) {
         e.preventDefault();
-        if (!validateStep(4)) return;
-
-        // Check agreement checkboxes
-        var agreements = form.querySelectorAll('.join-check--agreement input[type="checkbox"]');
-        var allChecked = true;
-        agreements.forEach(function (cb) {
-          if (!cb.checked) allChecked = false;
-        });
-        if (!allChecked) {
-          // Highlight unchecked agreements
-          agreements.forEach(function (cb) {
-            var label = cb.closest(".join-check--agreement");
-            if (!cb.checked) label.style.color = "var(--amber)";
-            else label.style.color = "";
-          });
-          return;
-        }
+        if (!validateStep(6)) return;
 
         // Hide form, show confirmation
         form.style.display = "none";
@@ -604,6 +657,55 @@
       });
     }
   }
+
+  // ─── Mobile nav (hamburger drawer for the page-nav) ─────────────────────
+  (function () {
+    var nav = document.querySelector(".page-nav");
+    if (!nav) return;
+
+    var btn = document.createElement("button");
+    btn.className = "mobile-nav-toggle";
+    btn.setAttribute("aria-label", "Open navigation");
+    btn.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" aria-hidden="true">' +
+      '<line x1="4" y1="7"  x2="20" y2="7"/>' +
+      '<line x1="4" y1="12" x2="20" y2="12"/>' +
+      '<line x1="4" y1="17" x2="20" y2="17"/>' +
+      '</svg>';
+
+    var backdrop = document.createElement("div");
+    backdrop.className = "mobile-nav-backdrop";
+
+    document.body.appendChild(btn);
+    document.body.appendChild(backdrop);
+
+    function setOpen(open) {
+      document.body.classList.toggle("mobile-nav-open", open);
+      btn.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
+    }
+    btn.addEventListener("click", function () {
+      setOpen(!document.body.classList.contains("mobile-nav-open"));
+    });
+    backdrop.addEventListener("click", function () { setOpen(false); });
+    nav.querySelectorAll("a").forEach(function (a) {
+      a.addEventListener("click", function () { setOpen(false); });
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") setOpen(false);
+    });
+  })();
+
+  // ─── Floating feedback indicator (every page) ────────────────────────────
+  (function () {
+    if (document.querySelector(".feedback-indicator")) return;
+    var a = document.createElement("a");
+    a.className = "feedback-indicator";
+    a.href = "https://opencivics.notion.site/35206d2570f28065a7dcf559894ec554?pvs=105";
+    a.target = "_blank";
+    a.rel = "noopener";
+    a.textContent = "Feedback";
+    document.body.appendChild(a);
+  })();
 
   // ─── Theme toggle ────────────────────────────────────────────────────────
   var toggleBtn = document.getElementById("theme-toggle");

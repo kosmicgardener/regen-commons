@@ -79,7 +79,7 @@
 /* ── PER-PAGE ACCENT — one dominant color per page ─────────────────────── */
 body[data-page="landing"]     { --accent: var(--forest); --accent-rgb: var(--forest-rgb); }
 body[data-page="learn"]       { --accent: var(--copper); --accent-rgb: var(--copper-rgb); }
-body[data-page="declaration"] { --accent: var(--gold);   --accent-rgb: 212, 160, 48; }
+body[data-page="seeds"]       { --accent: var(--gold);   --accent-rgb: 212, 160, 48; }
 body[data-page="join"]        { --accent: var(--copper); --accent-rgb: var(--copper-rgb); }
 body[data-page="map"]         { --accent: var(--teal);   --accent-rgb: 72, 184, 144; }
 
@@ -115,7 +115,7 @@ body::after {
   pointer-events: none;
   z-index: 0;
 }
-/* Hide canvas on map page — solid background, canvas adds noise over text */
+/* Map page — solid background, no mycelium overlay */
 body[data-page="map"] #mycelium-canvas { display: none; }
 
 /* ── SCROLL REVEAL ───────────────────────────────────────────────────────── */
@@ -1894,6 +1894,68 @@ p:last-child { margin-bottom: 0; }
   color: var(--ink);
 }
 
+/* ── Inline label hint (e.g. "(optional)") ── */
+.join-label-hint {
+  font-family: var(--font-serif);
+  font-size: 0.78rem;
+  font-style: italic;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink-dim);
+  font-weight: 400;
+  margin-left: 0.4rem;
+}
+
+/* ── Radio groups ── */
+.join-radio-group {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.4rem;
+}
+.join-radio-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+.join-radio {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  cursor: pointer;
+  padding: 0.35rem 0;
+  font-size: 0.9rem;
+  color: var(--ink);
+  line-height: 1.5;
+}
+.join-radio input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px; height: 16px;
+  border: 1.5px solid rgba(var(--copper-rgb), 0.25);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 3px;
+  position: relative;
+  transition: border-color 0.15s;
+}
+.join-radio input[type="radio"]:checked {
+  border-color: var(--accent, var(--forest));
+}
+.join-radio input[type="radio"]:checked::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent, var(--forest));
+  transform: translate(-50%, -50%);
+}
+
 /* ── Checkbox grid ── */
 .join-checkbox-grid {
   display: grid;
@@ -1903,7 +1965,15 @@ p:last-child { margin-bottom: 0; }
 .join-checkbox-grid--narrow {
   max-width: 400px;
 }
+.join-check--full {
+  grid-column: 1 / -1;
+}
 @media (max-width: 500px) { .join-checkbox-grid { grid-template-columns: 1fr; } }
+
+/* Validation on radio groups */
+.join-field.has-error .join-radio input[type="radio"] {
+  border-color: var(--amber);
+}
 
 .join-check {
   display: flex;
@@ -2007,9 +2077,20 @@ p:last-child { margin-bottom: 0; }
 }
 .join-back:hover { color: var(--ink); }
 
-.join-submit {
-  background: var(--accent, var(--forest));
-  color: var(--paper);
+/* ── In-prose links (orange, not browser blue) ── */
+.join-link,
+.join-form a,
+.join-intro-copy a {
+  color: var(--copper);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(var(--copper-rgb), 0.35);
+  transition: border-color 0.2s, color 0.2s;
+}
+.join-link:hover,
+.join-form a:hover,
+.join-intro-copy a:hover {
+  color: var(--amber);
+  border-bottom-color: var(--amber);
 }
 
 /* ── Validation ── */
@@ -2133,8 +2214,8 @@ p:last-child { margin-bottom: 0; }
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  border: 1.5px solid rgba(var(--copper-rgb), 0.25);
-  background: none;
+  border: 1.5px solid rgba(var(--copper-rgb), 0.45);
+  background: rgba(0, 0, 0, 0.18);
   text-decoration: none;
   transition: background 0.3s, border-color 0.3s;
   position: relative;
@@ -2142,16 +2223,21 @@ p:last-child { margin-bottom: 0; }
   align-items: center;
   justify-content: center;
 }
+[data-theme="light"] .page-nav-dot {
+  background: rgba(255, 255, 255, 0.5);
+  border-color: rgba(var(--copper-rgb), 0.35);
+}
 .page-nav-dot svg {
   width: 16px;
   height: 16px;
   fill: none;
-  stroke: var(--ink-dim);
-  stroke-width: 1.5;
+  stroke: var(--ink-mid);
+  stroke-width: 1.7;
   stroke-linecap: round;
   stroke-linejoin: round;
   transition: stroke 0.3s;
 }
+[data-theme="light"] .page-nav-dot svg { stroke: var(--ink); }
 .page-nav-dot:hover {
   border-color: var(--accent, var(--forest));
 }
@@ -2185,8 +2271,99 @@ p:last-child { margin-bottom: 0; }
 .page-nav-dot:hover::after {
   opacity: 1;
 }
+/* ── Mobile hamburger toggle (injected by script.js) ── */
+.mobile-nav-toggle { display: none; }
+.mobile-nav-backdrop { display: none; }
+
 @media (max-width: 640px) {
-  .page-nav { display: none; }
+  .mobile-nav-toggle {
+    display: flex;
+    position: fixed;
+    top: 1.2rem;
+    right: calc(1.4rem + 38px + 0.6rem);
+    z-index: 9999;
+    width: 38px;
+    height: 38px;
+    border: 1.5px solid rgba(var(--copper-rgb), 0.45);
+    border-radius: 50%;
+    background: var(--paper);
+    color: var(--ink-mid);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: color 0.25s, border-color 0.25s;
+  }
+  [data-theme="light"] .mobile-nav-toggle { color: var(--ink); }
+  .mobile-nav-toggle svg {
+    width: 18px;
+    height: 18px;
+    stroke-linecap: round;
+    stroke: currentColor;
+  }
+  body.mobile-nav-open .mobile-nav-toggle {
+    color: var(--accent, var(--copper));
+    border-color: var(--accent, var(--copper));
+  }
+
+  .mobile-nav-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+    z-index: 9000;
+  }
+  body.mobile-nav-open .mobile-nav-backdrop {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Page-nav becomes a drawer that slides down from below the toggle */
+  .page-nav {
+    flex-direction: column;
+    align-items: stretch;
+    top: 4.4rem;
+    right: 1.4rem;
+    background: var(--parchment);
+    border: 1px solid rgba(var(--copper-rgb), 0.25);
+    padding: 0.6rem;
+    gap: 0.4rem;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+    transform: translateY(-12px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.25s, opacity 0.25s;
+    min-width: 180px;
+  }
+  body.mobile-nav-open .page-nav {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Show labels alongside dots inside the drawer */
+  .page-nav-dot {
+    width: auto;
+    height: 40px;
+    border-radius: 4px;
+    padding: 0 0.9rem;
+    justify-content: flex-start;
+    gap: 0.7rem;
+    background: transparent;
+  }
+  [data-theme="light"] .page-nav-dot { background: transparent; }
+  .page-nav-dot::after {
+    position: static;
+    transform: none;
+    opacity: 1;
+    font-size: 0.6rem;
+    color: var(--ink-mid);
+    margin: 0;
+  }
+  .page-nav-dot.active::after { color: var(--accent, var(--forest)); }
 }
 
 
@@ -2275,5 +2452,46 @@ p:last-child { margin-bottom: 0; }
 @media (max-width: 768px) {
   .context {
     max-width: 100%;
+  }
+}
+
+/* ── Floating feedback indicator (injected globally by script.js) ───────── */
+.feedback-indicator {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  background: var(--copper);
+  color: var(--paper);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 1rem 0.55rem;
+  border: none;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  cursor: pointer;
+  z-index: 9990;
+  box-shadow: -4px 0 16px rgba(0, 0, 0, 0.3);
+  transition: background 0.2s, color 0.2s, padding-right 0.2s;
+}
+.feedback-indicator:hover {
+  background: var(--amber);
+  color: var(--paper);
+  padding-right: 0.75rem;
+}
+[data-theme="light"] .feedback-indicator {
+  color: #FFF;
+}
+@media (max-width: 640px) {
+  .feedback-indicator {
+    padding: 0.8rem 0.45rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
   }
 }
